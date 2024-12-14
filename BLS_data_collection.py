@@ -14,7 +14,7 @@ seriesId = ['LNS12000000',#Civilian Employment (Seasonally Adjusted)
             'LNS14000000', #Unemployment Rate (Seasonally Adjusted) 
             'CES0000000001', #Total Nonfarm Employment - Seasonally Adjusted
             'CES0500000002', # Total Private Average Weekly Hours of All Employees - Seasonally Adjusted
-            'CES0500000003' ]#Total Private Average Hourly Earnings of All Employees - Seasonally Adjusted
+            'CES0500000003']#Total Private Average Hourly Earnings of All Employees - Seasonally Adjusted
 
 # Function for collecting  data
 def get_bls_data(seriesId, start_year, end_year):
