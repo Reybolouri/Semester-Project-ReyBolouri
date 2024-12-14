@@ -1,17 +1,25 @@
 #BLS_data_collection
 
 import requests
-import json
-import prettytable
+import os
 import pandas as pd
+import json
+import datetime
+
+URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+API_key = "2e94f53db1984894b301b64867ac70c0"
+
+seriesId = ['LNS12000000',#Civilian Employment (Seasonally Adjusted)
+            'LNS13000000',#Civilian Unemployment (Seasonally Adjusted)
+            'LNS14000000', #Unemployment Rate (Seasonally Adjusted) 
+            'CES0000000001', #Total Nonfarm Employment - Seasonally Adjusted
+            'CES0500000002', # Total Private Average Weekly Hours of All Employees - Seasonally Adjusted
+            'CES0500000003' ]#Total Private Average Hourly Earnings of All Employees - Seasonally Adjusted
+
 headers = {'Content-type': 'application/json'}
-data = json.dumps({"seriesid": ['LNS12000000',
-                                'LNS13000000',
-                                'LNS14000000', 
-                                'CES0000000001',
-                                'CES0500000002', 
-                                'CES0500000003' ],"startyear":"2019", "endyear":"2024"})
-p = requests.post('https://api.bls.gov/publicAPI/v1/timeseries/data/', data=data, headers=headers)
+data = json.dumps({
+                                "startyear":"2019", "endyear":"2024"})
+p = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=data, headers=headers)
 
 
 
