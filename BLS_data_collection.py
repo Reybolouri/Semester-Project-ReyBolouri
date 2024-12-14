@@ -16,11 +16,18 @@ seriesId = ['LNS12000000',#Civilian Employment (Seasonally Adjusted)
             'CES0500000002', # Total Private Average Weekly Hours of All Employees - Seasonally Adjusted
             'CES0500000003' ]#Total Private Average Hourly Earnings of All Employees - Seasonally Adjusted
 
-headers = {'Content-type': 'application/json'}
-data = json.dumps({
-                                "startyear":"2019", "endyear":"2024"})
-p = requests.post('https://api.bls.gov/publicAPI/v2/timeseries/data/', data=data, headers=headers)
+# Function for collecting  data
+def get_bls_data(seriesId, start_year, end_year):
+    headers = {'Content-type': 'application/json'}
+    data = json.dumps({
+        "seriesId": seriesId,
+        "startyear": str(start_year),
+        "endyear": str(end_year),
+        "registrationkey": API_KEY
+    })
+    response = requests.post(URL, data=data, headers=headers)
 
-
-
-
+    if response.status_code == 200:
+        return json.loads(response.text)
+    else:
+        raise Exception(f"Failed to collect data: {response.status_code}, {response.text}")
