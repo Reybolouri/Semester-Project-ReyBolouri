@@ -29,7 +29,9 @@ def collect_bls_data(seriesId, start_year, end_year):
     response = requests.post(URL, data=payload, headers=headers)
     response.raise_for_status() #covers HTTP errors
     return response.json()
-#processing data - json
+
+
+#processing data - jso
 def process_bls_data(json_data):
     pr_data = []
     for series in json_data['Results']['series']:
@@ -58,8 +60,6 @@ def update_bls_data():
         start_year = 2019
         end_year = str(datetime.now().year)
 
-    #fetch new data
-    print(f"Fetching data for years {start_year} to {end_year}...")
     json_data = collect_bls_data (start_year, end_year)
     updated_df = process_bls_data (json_data)
 
