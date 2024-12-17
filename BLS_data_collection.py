@@ -9,6 +9,7 @@ from datetime import datetime
 URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
 API_key = "2e94f53db1984894b301b64867ac70c0"
 CSV_file = "BLS_data.csv"
+JSON_file = "BLS_data.json" 
 seriesId = [
     'LNS12000000',  # Civilian Employment (Seasonally Adjusted)
     'LNS13000000',  # Civilian Unemployment (Seasonally Adjusted)
@@ -22,8 +23,8 @@ def collect_bls_data(seriesId, start_year, end_year):
     headers = {'Content-type': 'application/json'}
     payload = json.dumps({
         "seriesid": seriesId,
-        "startyear": int(start_year), # "startyear": "2019","endyear": str(datetime.now().year) not okay?
-        "endyear": int(end_year),
+        "startyear": str(start_year), # "startyear": "2019","endyear": str(datetime.now().year) not okay?
+        "endyear": str(end_year),
         "registrationkey": API_key
     })
     response = requests.post(URL, data=payload, headers=headers)
@@ -42,7 +43,7 @@ def process_bls_data(json_data):
                 if period.startswith('M'):  # Monthly period
                     month = period[1:]
                     date_str = f"{year}-{month}-01"
-                    date = datetime.strptime(date_str, "%Y-%m-%d")
+                    date = datetime.strptime(date_str, "%Y-%m-%d") #date format
                     value = float(item['value'])
                     processed_data.append({
                         "series_id": series_id,
@@ -51,29 +52,38 @@ def process_bls_data(json_data):
                         "date": date,
                         "value": value,
                     })
+                    
     return pd.DataFrame(processed_data)
 
 def update_bls_data():
-    #start year=2019,  update data for latest month
+    #start year=2019,  update data for latest date
     if os.path.exists(CSV_file):
         existing_data = pd.read_csv(CSV_file)
         existing_years = existing_data['year'].astype(int)
         start_year = existing_years.max() + 1
     else:
         start_year = 2019
+        existing_data = None
 
     end_year = datetime.now().year
 
     json_data = collect_bls_data(seriesId, start_year, end_year)
     updated_df = process_bls_data(json_data)
 
-    if os.path.exists(CSV_file):
-        existing_df = pd.read_csv(CSV_file)
-        combined_df = pd.concat([existing_df, updated_df]).drop_duplicates(subset=['series_id', 'year', 'period'], keep='last')
+    if existing_data is not None:
+        combined_df = pd.concat([existing_data, updated_df]).drop_duplicates(
+            subset=['series_id', 'date'], keep='last'
+        )
     else:
         combined_df = updated_df
 
+    # Save the updated DataFrame to CSV
     combined_df.to_csv(CSV_file, index=False)
+    print(f"Data successfully updated and saved to {CSV_file}.")
+     # Save to JSON
+    combined_df[['series_id', 'date', 'value']].to_json(JSON_file, orient="records", indent=4)
+    print(f"Data successfully saved to {JSON_file}.")
 
+# Main execution
 if __name__ == "__main__":
     update_bls_data()
