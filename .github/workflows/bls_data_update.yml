@@ -39,7 +39,7 @@ jobs:
 
           if git status | grep -q "Changes to be committed"; then
             git commit -m "Automated BLS Data Update - $(date)"
-            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+            git push https://x-access-token:${{ secrets.API_KEY }}@github.com/${{ github.repository }}.git main
           else
             echo "No changes to commit"
           fi
