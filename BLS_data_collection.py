@@ -17,19 +17,20 @@ seriesId = [
     'CES0500000002',  # Total Private Average Weekly Hours of All Employees (Seasonally Adjusted)
     'CES0500000003'   # Total Private Average Hourly Earnings of All Employees (Seasonally Adjusted)
 ]
-
+# Function for collecting  data - look at sample code again
 def collect_bls_data(seriesId, start_year, end_year):
     headers = {'Content-type': 'application/json'}
     payload = json.dumps({
         "seriesid": seriesId,
-        "startyear": str(start_year),
-        "endyear": str(end_year),
+        "startyear": int(start_year), # "startyear": "2019","endyear": str(datetime.now().year) not okay?
+        "endyear": int(end_year),
         "registrationkey": API_key
     })
     response = requests.post(URL, data=payload, headers=headers)
     response.raise_for_status()  # Handles HTTP errors
     return response.json()
 
+#processing data - json
 def process_bls_data(json_data):
     processed_data = []
     if 'Results' in json_data and 'series' in json_data['Results']:
@@ -53,6 +54,7 @@ def process_bls_data(json_data):
     return pd.DataFrame(processed_data)
 
 def update_bls_data():
+    #start year=2019,  update data for latest month
     if os.path.exists(CSV_file):
         existing_data = pd.read_csv(CSV_file)
         existing_years = existing_data['year'].astype(int)
