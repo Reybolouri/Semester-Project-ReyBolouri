@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 
-st.title("U.S. Labor Statistics")
+st.title("U.S.A. Labor Statistics")
 st.markdown("### Visualizing trends in employment, unemployment, and earnings data")
 
 
