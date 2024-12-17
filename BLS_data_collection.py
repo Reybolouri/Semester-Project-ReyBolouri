@@ -56,8 +56,8 @@ def process_bls_data(json_data):
                     
     return pd.DataFrame(processed_data)
 
+#start year=2019,  update data for latest date
 def update_bls_data():
-    #start year=2019,  update data for latest date
     if os.path.exists(CSV_file):
         existing_data = pd.read_csv(CSV_file)
         existing_years = existing_data['year'].astype(int)
@@ -68,8 +68,8 @@ def update_bls_data():
 
     end_year = datetime.now().year
 
-    json_data = collect_bls_data(seriesId, start_year, end_year)
-    updated_df = process_bls_data(json_data)
+    collected_data = collect_bls_data(seriesId, start_year, end_year)
+    updated_df = process_bls_data(collected_data)
 
     if existing_data is not None:
         combined_df = pd.concat([existing_data, updated_df]).drop_duplicates(
