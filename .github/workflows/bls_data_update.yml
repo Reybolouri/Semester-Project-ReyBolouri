@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: '3.9'
 
-      #  Install Dependencies
+      # Install Dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
