@@ -1,2 +1,4 @@
 pandas
 streamlit
+os
+requests
