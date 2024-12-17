@@ -9,7 +9,8 @@ from datetime import datetime
 URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
 API_key = "2e94f53db1984894b301b64867ac70c0"
 CSV_file = "BLS_data.csv"
-JSON_file = "BLS_data.json" 
+JSON_file = "BLS_data.json"
+ 
 seriesId = [
     'LNS12000000',  # Civilian Employment (Seasonally Adjusted)
     'LNS13000000',  # Civilian Unemployment (Seasonally Adjusted)
@@ -77,9 +78,11 @@ def update_bls_data():
     else:
         combined_df = updated_df
 
+
     # Save the updated DataFrame to CSV
-    combined_df.to_csv(CSV_file, index=False)
+    combined_df.to_csv(CSV_file, index=True)
     print(f"Data successfully updated and saved to {CSV_file}.")
+    
     # Save to JSON
     combined_df[['series_id', 'date', 'value']].to_json(JSON_file, orient="records", indent=4)
     print(f"Data successfully saved to {JSON_file}.")
