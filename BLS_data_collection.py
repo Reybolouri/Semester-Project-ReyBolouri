@@ -80,11 +80,11 @@ def update_bls_data():
 
 
     # Save the updated DataFrame to CSV
-    combined_df.to_csv(CSV_file, index=True)
+    combined_df.to_csv(CSV_file, index=False)
     print(f"Data successfully updated and saved to {CSV_file}.")
     
     # Save to JSON
-    combined_df[['series_id', 'date', 'value']].to_json(JSON_file, orient="records", indent=4)
+    combined_df[['series_id', 'date', 'value']].to_json(JSON_file, orient="records", indent=3)
     print(f"Data successfully saved to {JSON_file}.")
 
 # Main execution
