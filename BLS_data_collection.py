@@ -9,7 +9,6 @@ from datetime import datetime
 URL = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
 API_key = "2e94f53db1984894b301b64867ac70c0"
 CSV_file = "BLS_data.csv"
-JSON_file = "BLS_data.json"
  
 seriesId = [
     'LNS12000000',  # Civilian Employment (Seasonally Adjusted)
@@ -19,7 +18,7 @@ seriesId = [
     'CES0500000002',  # Total Private Average Weekly Hours of All Employees (Seasonally Adjusted)
     'CES0500000003'   # Total Private Average Hourly Earnings of All Employees (Seasonally Adjusted)
 ]
-# Function for collecting  data - look at sample code again
+# Function for collecting data from BLS API
 def collect_bls_data(seriesId, start_year, end_year):
     headers = {'Content-type': 'application/json'}
     payload = json.dumps({
@@ -32,7 +31,7 @@ def collect_bls_data(seriesId, start_year, end_year):
     response.raise_for_status()  # Handles HTTP errors
     return response.json()
 
-#processing data - 
+#processing json data to a data frame    
 def process_bls_data(json_data):
     processed_data = []
     if 'Results' in json_data and 'series' in json_data['Results']:
@@ -43,8 +42,8 @@ def process_bls_data(json_data):
                 period = item['period']
                 if period.startswith('M'):  # Monthly period
                     month = period[1:]
-                    date_str = f"{year}-{month}-01"
-                    date = datetime.strptime(date_str, "%Y-%m-%d") #date format
+                    date_str = f"{year}-{month}-01"  # Create date string
+                    date = datetime.strptime(date_str, "%Y-%m-%d") #datetime  format
                     value = float(item['value'])
                     processed_data.append({
                         "series_id": series_id,
@@ -67,10 +66,10 @@ def update_bls_data():
         existing_data = None
 
     end_year = datetime.now().year
-
+ # Collect new data 
     collected_data = collect_bls_data(seriesId, start_year, end_year)
     updated_df = process_bls_data(collected_data)
-
+ # Merge with existing data
     if existing_data is not None:
         combined_df = pd.concat([existing_data, updated_df]).drop_duplicates(
             subset=['series_id', 'date'], keep='last'
