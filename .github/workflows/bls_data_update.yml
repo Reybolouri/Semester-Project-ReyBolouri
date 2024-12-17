@@ -1,6 +1,5 @@
 name: BLS Data Update
 
-# Event triggers
 on:
   schedule:
     - cron: '0 0 1 * *'  # Runs at 00:00 UTC on the 1st day of each month
@@ -11,31 +10,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      #  Checkout the repository
+      # Checkout the repository
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      #  Set up Python
+      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
-      #  Install Dependencies
+      # Install Dependencies
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Run Data Collection Script
+      # Run the Data Collection Script
       - name: Run Data Collection Script
         run: python BLS_data_collection.py
 
-      #  Commit and Push Updated Data
+      # Commit and Push Updated Data
       - name: Commit and Push Changes
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
           git add BLS_data.csv
-          git commit -m "Automated BLS Data Update - $(date)"
-          git push
+
+          if git status | grep -q "Changes to be committed"; then
+            git commit -m "Automated BLS Data Update - $(date)"
+            git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+          else
+            echo "No changes to commit"
+          fi
