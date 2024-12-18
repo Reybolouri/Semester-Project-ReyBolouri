@@ -85,8 +85,8 @@ ax.grid(True)
 
 st.pyplot(fig)
 
-# Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
-st.subheader("Relationship Between Weekly Hours and Hourly Earnings")
+# Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
+st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
 # Filter data for the two relevant series
 hours_data = data[data['series_id'] == 'CES0500000002']
@@ -99,15 +99,29 @@ merged_data = pd.merge(
     on='date'
 )
 
-# Create the scatter plot
-fig, ax = plt.subplots(figsize=(8, 6))
-ax.scatter(merged_data['avg_weekly_hours'], merged_data['avg_hourly_earnings'], alpha=0.7)
-ax.set_title("Average Weekly Hours vs. Average Hourly Earnings")
-ax.set_xlabel("Average Weekly Hours")
-ax.set_ylabel("Average Hourly Earnings")
-ax.grid(True)
+# Create the dual-axis time series plot
+fig, ax1 = plt.subplots(figsize=(10, 6))
+
+# Plot "Average Weekly Hours" on the left y-axis
+color = 'tab:blue'
+ax1.set_xlabel("Date")
+ax1.set_ylabel("Average Weekly Hours", color=color)
+ax1.plot(merged_data['date'], merged_data['avg_weekly_hours'], color=color, label="Weekly Hours")
+ax1.tick_params(axis='y', labelcolor=color)
+
+# Plot "Average Hourly Earnings" on the right y-axis
+ax2 = ax1.twinx()  # Create a second y-axis sharing the same x-axis
+color = 'tab:orange'
+ax2.set_ylabel("Average Hourly Earnings ($)", color=color)
+ax2.plot(merged_data['date'], merged_data['avg_hourly_earnings'], color=color, label="Hourly Earnings")
+ax2.tick_params(axis='y', labelcolor=color)
+
+# Add a title and grid
+fig.suptitle("Average Weekly Hours vs Average Hourly Earnings Over Time")
+ax1.grid(True)
 
 st.pyplot(fig)
+
 
 
 # Summary Statistics
