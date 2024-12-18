@@ -87,10 +87,9 @@ st.markdown(
 )
 
 
-
 st.write("Use the sidebar to filter data by series and year range. Visualizations and summaries will update dynamically.")
 
-# Interactive Plot: Unemployment Rate
+# Interactive Plot: Unemployment Rates
 st.subheader("Unemployment Rate Over Time")
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
 fig_unemployment = go.Figure()
