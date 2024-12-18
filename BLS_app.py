@@ -52,9 +52,9 @@ selected_series_names = st.sidebar.multiselect(
 # Filter by years
 selected_years = st.sidebar.slider(
     "Select Year Range:",
-    min_value=str(data['year'].min()),
-    max_value=str(data['year'].max()),
-    value=(2019, str(data['year'].max()))
+    min_value=int(data['year'].min()),
+    max_value=int(data['year'].max()),
+    value=(2019, int(data['year'].max()))
 )
 
 st.sidebar.markdown(
