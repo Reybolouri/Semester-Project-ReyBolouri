@@ -223,21 +223,16 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 
+# Interactive Pie Chart for Employment vs Unemployment with Year Filter
+st.subheader("Interactive Pie Chart: Employment vs Unemployment")
 
-#  Civilian Employment and Unemployment
-st.subheader("Civilian Employment vs Civilian Unemployment")
-selected_year = st.sidebar.selectbox(
-    "Select Year for Pie Chart:",
-    options=sorted(data['date'].dt.year.unique())
-)
+# Filter data based on the selected year range
+filtered_employment = data[(data['series_id'] == 'LNS12000000') & (data['year'].between(selected_years[0], selected_years[1]))]
+filtered_unemployment = data[(data['series_id'] == 'LNS13000000') & (data['year'].between(selected_years[0], selected_years[1]))]
 
-# Filter data for the selected year
-employment_data = data[(data['series_id'] == 'LNS12000000') & (data['date'].dt.year == selected_year)]
-unemployment_data = data[(data['series_id'] == 'LNS13000000') & (data['date'].dt.year == selected_year)]
-
-# Aggregate total employment and unemployment values for the selected year
-employment_total = employment_data['value'].sum()
-unemployment_total = unemployment_data['value'].sum()
+# Aggregate the total values over the selected year range
+employment_total = filtered_employment['value'].sum()
+unemployment_total = filtered_unemployment['value'].sum()
 
 # Create a DataFrame for the pie chart
 pie_data = pd.DataFrame({
@@ -245,17 +240,17 @@ pie_data = pd.DataFrame({
     "Value": [employment_total, unemployment_total]
 })
 
-# Create the interactive pie chart
+# Create the pie chart
 fig_pie = px.pie(
     pie_data,
     names="Category",
     values="Value",
-    title=f"Employment vs Unemployment in {selected_year}",
+    title=f"Employment vs Unemployment ({selected_years[0]} - {selected_years[1]})",
     color="Category",
-    color_discrete_map={"Employment": "lightblue", "Unemployment": "pink"}
+    color_discrete_map={"Employment": "blue", "Unemployment": "red"}
 )
 
-# Display the pie chart in Streamlit
+# Display the pie chart
 st.plotly_chart(fig_pie, use_container_width=True)
 
 
