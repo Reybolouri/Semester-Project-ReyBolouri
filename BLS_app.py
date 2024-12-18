@@ -224,14 +224,13 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 
-# Interactive Pie Chart: Civilian Employment and Unemployment
+#  Civilian Employment and Unemployment
 st.subheader("Civilian Employment vs Civilian Unemployment")
-
-# Allow user to select a specific year for the pie chart
-selected_year = st.sidebar.selectbox(
+selected_year = st.sidebar.slider(
     "Select Year for Pie Chart:",
-    options=data['date'].dt.year.unique(),
-    index=0
+    min_value=int(data['date'].dt.year.min()),
+    max_value=int(data['date'].dt.year.max()),
+    value=int(data['date'].dt.year.max())
 )
 
 # Filter data for the selected year
@@ -257,8 +256,8 @@ fig_pie = px.pie(
     color="Category",
     color_discrete_map={"Employment": "blue", "Unemployment": "red"}
 )
-st.plotly_chart(fig_pie, use_container_width=True)
 
+st.plotly_chart(fig_pie, use_container_width=True)
 
 
 # Summary Statistics
