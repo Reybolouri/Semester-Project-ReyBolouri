@@ -97,7 +97,7 @@ st.markdown(
     """
     <div style="font-size:17px; line-height:1.5;;">
         <p>
-            Welcome to the US Labor Market Dashboard! :wave: This dashboard analyzes key labor statistics provided by the 
+            Welcome to the US Labor Market Dashboard!👋 This dashboard analyzes key labor statistics provided by the 
             <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>, 
             including civilian employment, unemployment, nonfarm employments, and average earnings trends over time.
         </p>
@@ -114,20 +114,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# COVID-19's Impact
-st.markdown(
-    """
-    <div style="font-size:17px; line-height:1.5;">
-        <h3>🦠 COVID-19's Impact on the Labor Market</h3>
-        Wow! The impact of COVID-19 on the labor market is hard to miss. 
-        In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
-        <br><br>
-        Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. 
-        It was one of the most sudden and dramatic economic shocks in history.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+
 
 # Interactive Plot: Unemployment Rates
 st.subheader(" :chart_with_upwards_trend: Unemployment Rates")
