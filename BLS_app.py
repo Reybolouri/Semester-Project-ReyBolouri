@@ -97,13 +97,16 @@ st.markdown(
     """
     <div style="font-size:16px; line-height:1.6;">
         <p>
-            This dashboard analyzes key labor statistics provided by the 
+            Welcome to the US Labor Market Dashboard. This dashboard analyzes key labor statistics provided by the 
             <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>, 
-            including civilian employment, unemployment, nonfarm employment rates, and earnings trends over time. 
-            It spans data since 2019 and is updated monthly with the latest information.
+            including civilian employment, unemployment, nonfarm employment rates, and earnings trends over time.
         </p>
         <p>
-            Use the filters on the sidebar to customize your view, explore trends, and download filtered data for further analysis.
+            It presents the data and its trends using dynamic and interactive visualizations, spanning the years since 2019, 
+            and is updated monthly with the latest data from the U.S. Bureau of Labor Statistics.
+        </p>
+        <p>
+            Use the filters on the sidebar to customize your view and download filtered data for further analysis.
         </p>
     </div>
     """,
