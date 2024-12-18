@@ -224,38 +224,49 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 
-# Animated Bar Chart: Civilian Employment
-st.subheader("Animated Bar Chart: Civilian Employment Over Time")
+# Employment to Unemployment Pyramid Chart
+st.subheader("Employment to Unemployment Pyramid Chart")
+
 employment_data = data[data['series_id'] == 'LNS12000000']
-fig_employment = px.bar(
-    employment_data,
-    x="date",
-    y="value",
-    title="Civilian Employment Over Time",
-    labels={"value": "Employment (in thousands)", "date": "Date"},
-    animation_frame=employment_data['date'].dt.year.astype(str),
-    color="value",
-    color_continuous_scale="Blues"
-)
-fig_employment.update_layout(xaxis_title="Date", yaxis_title="Employment (in thousands)")
-st.plotly_chart(fig_employment)
-
-# Animated Bar Chart: Civilian Unemployment
-st.subheader("Animated Bar Chart: Civilian Unemployment Over Time")
 unemployment_data = data[data['series_id'] == 'LNS13000000']
-fig_unemployment_animated = px.bar(
-    unemployment_data,
-    x="date",
-    y="value",
-    title="Civilian Unemployment Over Time",
-    labels={"value": "Unemployment (in thousands)", "date": "Date"},
-    animation_frame=unemployment_data['date'].dt.year.astype(str),
-    color="value",
-    color_continuous_scale="Reds"
+pyramid_data = pd.merge(
+    employment_data[['date', 'value']].rename(columns={'value': 'employment'}),
+    unemployment_data[['date', 'value']].rename(columns={'value': 'unemployment'}),
+    on='date'
 )
-fig_unemployment_animated.update_layout(xaxis_title="Date", yaxis_title="Unemployment (in thousands)")
-st.plotly_chart(fig_unemployment_animated)
 
+pyramid_data['employment'] = pyramid_data['employment'] * -1  # Invert employment for pyramid effect
+
+fig_pyramid = go.Figure()
+fig_pyramid.add_trace(
+    go.Bar(
+        x=pyramid_data['employment'],
+        y=pyramid_data['date'],
+        orientation='h',
+        name='Employment',
+        marker=dict(color='blue')
+    )
+)
+fig_pyramid.add_trace(
+    go.Bar(
+        x=pyramid_data['unemployment'],
+        y=pyramid_data['date'],
+        orientation='h',
+        name='Unemployment',
+        marker=dict(color='red')
+    )
+)
+
+fig_pyramid.update_layout(
+    title="Employment vs Unemployment Pyramid Chart",
+    xaxis_title="Number (in thousands)",
+    yaxis_title="Date",
+    barmode='overlay',
+    template="plotly_white",
+    legend=dict(title="Categories")
+)
+
+st.plotly_chart(fig_pyramid, use_container_width=True)
 
 
 
