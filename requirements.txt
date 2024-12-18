@@ -2,3 +2,4 @@ pandas
 streamlit
 requests
 matplotlib
+plotly
