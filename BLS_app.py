@@ -149,7 +149,6 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 """)
 #######################################################################
 
-
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
@@ -172,10 +171,9 @@ fig.add_trace(
     go.Scatter(
         x=merged_data['date'],
         y=merged_data['avg_weekly_hours'],
-        mode='lines+markers',
+        mode='lines',
         name="Average Weekly Hours",
-        line=dict(color='#1f77b4', width=3),  # Use a nicer blue shade
-        marker=dict(size=6, symbol='circle', color='#1f77b4'),
+        line=dict(color='blue', width=2),
         hovertemplate="Date: %{x}<br>Weekly Hours: %{y:.2f}<extra></extra>"
     )
 )
@@ -185,58 +183,38 @@ fig.add_trace(
     go.Scatter(
         x=merged_data['date'],
         y=merged_data['avg_hourly_earnings'],
-        mode='lines+markers',
+        mode='lines',
         name="Average Hourly Earnings",
-        line=dict(color='#ff7f0e', width=3),  # Use a vibrant orange
-        marker=dict(size=6, symbol='square', color='#ff7f0e'),
+        line=dict(color='orange', width=2, dash='dot'),
         hovertemplate="Date: %{x}<br>Hourly Earnings: $%{y:.2f}<extra></extra>"
     )
 )
 
-# Customize layout for aesthetics
+# Customize layout
 fig.update_layout(
-    title={
-        'text': "Interactive Trends: Weekly Hours vs Hourly Earnings",
-        'y': 0.9,
-        'x': 0.5,
-        'xanchor': 'center',
-        'yanchor': 'top'
-    },
+    title="Weekly Hours and Hourly Earnings Trends",
     xaxis=dict(
         title="Date",
         showgrid=True,
-        gridcolor='rgba(200, 200, 200, 0.3)',
-        showline=True,
-        linewidth=1,
-        linecolor='black',
-        mirror=True
+        gridcolor='lightgray',
+        zeroline=False
     ),
     yaxis=dict(
         title="Value",
         showgrid=True,
-        gridcolor='rgba(200, 200, 200, 0.3)',
-        showline=True,
-        linewidth=1,
-        linecolor='black',
-        mirror=True
+        gridcolor='lightgray',
+        zeroline=False
     ),
     legend=dict(
         title="Metrics",
         orientation="h",
         yanchor="bottom",
         y=1.02,
-        xanchor="right",
-        x=1
+        xanchor="center",
+        x=0.5
     ),
     hovermode="x unified",
-    template="plotly_white",
-    margin=dict(l=40, r=40, t=60, b=40)
-)
-
-# Add subtle background color to the plot
-fig.update_layout(
-    plot_bgcolor='rgba(240, 240, 240, 1)',  # Light gray background
-    paper_bgcolor='rgba(255, 255, 255, 1)'  # White paper background
+    template="simple_white"
 )
 
 # Display the interactive Plotly figure in Streamlit
