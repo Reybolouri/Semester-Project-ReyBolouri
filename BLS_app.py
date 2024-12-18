@@ -27,7 +27,8 @@ def load_data():
 
 # Load the data
 data = load_data()
-
+data['year'] = data['date'].dt.year
+data['year'] = data['year'].astype(int)  
 # Add a column for human-readable series names
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
