@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
 # Mapping of series IDs to human-readable names
@@ -25,18 +24,18 @@ data = load_data()
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
-# Sidebar: Enhance UI
+# Sidebar Enhancements
 st.sidebar.markdown(
     """
     <style>
     .sidebar .sidebar-content {
         background-color: #f8f9fa; /* Light gray background */
         border-radius: 10px;      /* Rounded corners */
-        padding: 10px;            /* Padding for spacing */
+        padding: 15px;            /* Padding for spacing */
+        font-family: Arial, sans-serif; /* Better font */
     }
     .sidebar h3 {
         color: #4CAF50;           /* Green accent for headers */
-        margin-bottom: 5px;
     }
     .sidebar p {
         color: #6c757d;           /* Subtle gray text */
@@ -47,17 +46,9 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-# Sidebar Header
 st.sidebar.header("Filters")
-
-# Sidebar Introduction
 st.sidebar.markdown(
-    """
-    Use the filters below to customize the dashboard:
-    - Select data series
-    - Choose a year range
-    """,
-    unsafe_allow_html=True
+    "Use the filters below to customize the dashboard and explore trends:"
 )
 
 # Debugging: Check unique values in series_name
@@ -72,7 +63,6 @@ default_options = ["Civilian Employment",
                    "Average Weekly Hours of All Employees",
                    "Average Hourly Earnings of All Employees"]
 
-# Ensure default values exist in available options
 default_options = [opt for opt in default_options if opt in available_options]
 
 # Multiselect for series names
@@ -90,12 +80,11 @@ selected_years = st.sidebar.slider(
     value=(2019, int(data['year'].max()))
 )
 
-# Add a divider and footer in the sidebar
 st.sidebar.markdown(
     """
     ---
     <p style="font-size: 12px; color: #6c757d;">
-    Built with ❤️ using Streamlit. Data sourced from the Bureau of Labor Statistics.
+    Data sourced from the [Bureau of Labor Statistics](https://www.bls.gov/home.htm).
     </p>
     """,
     unsafe_allow_html=True
@@ -113,7 +102,15 @@ filtered_data = data[
 ]
 
 # Dashboard Title and Description
-st.title("US Labor Market Dashboard")
+st.markdown(
+    """
+    <div style="background-color:#4CAF50; padding:10px; border-radius:10px; text-align:center;">
+        <h1 style="color:white; margin:0;">US Labor Market Dashboard</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 st.write("""
 This dashboard provides insights into key labor statistics from the Bureau of Labor Statistics (BLS).
 Select the data series and time range below to explore trends and summaries.
@@ -122,10 +119,7 @@ Select the data series and time range below to explore trends and summaries.
 # Interactive Plot: Unemployment Rate
 st.subheader("Unemployment Rate Over Time")
 
-# Filter data for the Unemployment Rate series
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
-
-# Create an interactive plot
 fig_unemployment = go.Figure()
 
 fig_unemployment.add_trace(
@@ -138,7 +132,6 @@ fig_unemployment.add_trace(
     )
 )
 
-# Update layout for better appearance
 fig_unemployment.update_layout(
     title="Unemployment Rate Over Time",
     xaxis_title="Date",
@@ -147,16 +140,12 @@ fig_unemployment.update_layout(
     hovermode="x unified"
 )
 
-# Display the plot in Streamlit
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
 st.subheader("Total Nonfarm Workers Over Time")
 
-# Filter data for the Total Nonfarm Workers series
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
-
-# Create an interactive plot
 fig_nonfarm = go.Figure()
 
 fig_nonfarm.add_trace(
@@ -169,7 +158,6 @@ fig_nonfarm.add_trace(
     )
 )
 
-# Update layout for better appearance
 fig_nonfarm.update_layout(
     title="Total Nonfarm Workers Over Time",
     xaxis_title="Date",
@@ -178,7 +166,6 @@ fig_nonfarm.update_layout(
     hovermode="x unified"
 )
 
-# Display the plot in Streamlit
 st.plotly_chart(fig_nonfarm, use_container_width=True)
 
 # COVID-19's Impact
@@ -189,24 +176,19 @@ Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unempl
 Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
 """)
 
-# Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
+# Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
-# Filter data for the two relevant series
 hours_data = data[data['series_id'] == 'CES0500000002']
 earnings_data = data[data['series_id'] == 'CES0500000003']
-
-# Merge the two datasets on the date
 merged_data = pd.merge(
     hours_data[['date', 'value']].rename(columns={'value': 'avg_weekly_hours'}),
     earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
     on='date'
 )
 
-# Create an interactive Plotly figure
 fig = go.Figure()
 
-# Add "Average Weekly Hours" as a line plot
 fig.add_trace(
     go.Scatter(
         x=merged_data['date'],
@@ -218,7 +200,6 @@ fig.add_trace(
     )
 )
 
-# Add "Average Hourly Earnings" as a line plot
 fig.add_trace(
     go.Scatter(
         x=merged_data['date'],
@@ -230,7 +211,6 @@ fig.add_trace(
     )
 )
 
-# Customize layout
 fig.update_layout(
     title="Weekly Hours and Hourly Earnings Trends",
     xaxis=dict(
@@ -257,7 +237,6 @@ fig.update_layout(
     template="simple_white"
 )
 
-# Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
 
 # Summary Statistics
