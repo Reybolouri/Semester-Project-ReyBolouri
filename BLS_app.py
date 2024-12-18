@@ -149,54 +149,22 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 """)
 #######################################################################
 
-import plotly.graph_objects as go
 
-# Ensure the 'date' column is in datetime format
-data['date'] = pd.to_datetime(data['date'])
+# Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
+st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
-# Add filters for date range
-st.sidebar.header("Filters for Weekly Hours vs Hourly Earnings")
+# Filter data for the two relevant series
+hours_data = data[data['series_id'] == 'CES0500000002']
+earnings_data = data[data['series_id'] == 'CES0500000003']
 
-# Date range filter
-min_date = data['date'].min()
-max_date = data['date'].max()
-start_date, end_date = st.sidebar.date_input(
-    "Select Date Range:",
-    [min_date, max_date],
-    min_value=min_date,
-    max_value=max_date
-)
-
-# Debugging: Print selected date range
-st.sidebar.write(f"Selected Date Range: {start_date} to {end_date}")
-
-# Filter data for the two relevant series within the selected date range
-hours_data = data[
-    (data['series_id'] == 'CES0500000002') & 
-    (data['date'] >= pd.to_datetime(start_date)) & 
-    (data['date'] <= pd.to_datetime(end_date))
-]
-earnings_data = data[
-    (data['series_id'] == 'CES0500000003') & 
-    (data['date'] >= pd.to_datetime(start_date)) & 
-    (data['date'] <= pd.to_datetime(end_date))
-]
-
-# Debugging: Display filtered datasets
-st.write("Filtered Weekly Hours Data", hours_data)
-st.write("Filtered Hourly Earnings Data", earnings_data)
-
-# Merge the filtered datasets on the date
+# Merge the two datasets on the date
 merged_data = pd.merge(
     hours_data[['date', 'value']].rename(columns={'value': 'avg_weekly_hours'}),
     earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
     on='date'
 )
 
-# Debugging: Display merged data
-st.write("Merged Data", merged_data)
-
-# Interactive Plotly figure with filtered data
+# Create an interactive Plotly figure
 fig = go.Figure()
 
 # Add "Average Weekly Hours" as a line plot
@@ -206,7 +174,8 @@ fig.add_trace(
         y=merged_data['avg_weekly_hours'],
         mode='lines+markers',
         name="Average Weekly Hours",
-        line=dict(color='blue'),
+        line=dict(color='#1f77b4', width=3),  # Use a nicer blue shade
+        marker=dict(size=6, symbol='circle', color='#1f77b4'),
         hovertemplate="Date: %{x}<br>Weekly Hours: %{y:.2f}<extra></extra>"
     )
 )
@@ -218,27 +187,62 @@ fig.add_trace(
         y=merged_data['avg_hourly_earnings'],
         mode='lines+markers',
         name="Average Hourly Earnings",
-        line=dict(color='orange'),
+        line=dict(color='#ff7f0e', width=3),  # Use a vibrant orange
+        marker=dict(size=6, symbol='square', color='#ff7f0e'),
         hovertemplate="Date: %{x}<br>Hourly Earnings: $%{y:.2f}<extra></extra>"
     )
 )
 
-# Customize layout
+# Customize layout for aesthetics
 fig.update_layout(
-    title="Interactive Trends: Weekly Hours vs Hourly Earnings",
-    xaxis_title="Date",
-    yaxis_title="Value",
-    legend_title="Metric",
+    title={
+        'text': "Interactive Trends: Weekly Hours vs Hourly Earnings",
+        'y': 0.9,
+        'x': 0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'
+    },
+    xaxis=dict(
+        title="Date",
+        showgrid=True,
+        gridcolor='rgba(200, 200, 200, 0.3)',
+        showline=True,
+        linewidth=1,
+        linecolor='black',
+        mirror=True
+    ),
+    yaxis=dict(
+        title="Value",
+        showgrid=True,
+        gridcolor='rgba(200, 200, 200, 0.3)',
+        showline=True,
+        linewidth=1,
+        linecolor='black',
+        mirror=True
+    ),
+    legend=dict(
+        title="Metrics",
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1
+    ),
+    hovermode="x unified",
     template="plotly_white",
-    hovermode="x unified"
+    margin=dict(l=40, r=40, t=60, b=40)
+)
+
+# Add subtle background color to the plot
+fig.update_layout(
+    plot_bgcolor='rgba(240, 240, 240, 1)',  # Light gray background
+    paper_bgcolor='rgba(255, 255, 255, 1)'  # White paper background
 )
 
 # Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
 
-
-
-
+###################################
 
 
 
