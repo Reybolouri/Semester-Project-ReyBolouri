@@ -34,11 +34,11 @@ data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unm
 
 
 
-# Sidebar Enhancements
+# Sidebar 
 st.sidebar.header("Filters :mag: ")
 st.sidebar.write("Use the filters below to customize the dashboard.")
 
-# Dynamically assign defaults based on available options
+# Dynamically assign defaults based on these series available options
 available_options = data['series_name'].unique()
 default_options = ["Civilian Employment",
                    "Civilian Unemployment",
@@ -87,7 +87,7 @@ st.markdown(
     """
     <div style="text-align: center; padding: 10px 0;">
         <h1 style="color:#0D47A1;">US Labor Market Dashboard</h1>
-        <p style="color:gray;">Unemployment and labor trends over the years, sourced from the Bureau of Labor Statistics.</p>
+        <p style="color:gray;"> </p>
     </div>
     """,
     unsafe_allow_html=True
@@ -95,7 +95,7 @@ st.markdown(
 # Introduction Section
 st.markdown(
     """
-    <div style="font-size:17px; line-height:1.5;;">
+    <div style="font-size:18px; line-height:1.5;;">
         <p>
             Welcome to the US Labor Market Dashboard!👋 This dashboard analyzes key labor statistics provided by the 
             <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>, 
@@ -166,10 +166,10 @@ fig_nonfarm.update_layout(
 
 st.plotly_chart(fig_nonfarm, use_container_width=True)
 
-# COVID-19's Impact
+# COVID-19's Impact 
 st.markdown(
     """
-    <div style="font-size:17px; line-height:1.5;">
+    <div style="font-size:18px; line-height:1.5;">
         <h3>🦠 COVID-19's Impact on the Labor Market</h3>
         Wow! The impact of COVID-19 on the labor market is hard to miss. 
         In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
@@ -255,7 +255,7 @@ st.plotly_chart(fig, use_container_width=True)
 # hours and wage text
 st.markdown(
     """
-    <div style="font-size:17px; line-height:1.5;">
+    <div style="font-size:18px; line-height:1.5;">
         The plot above shows the weekly hours of work in comparison to the compensation. 
         You can view the exact values by hovering over the plot.
         <br><br>
@@ -268,7 +268,7 @@ st.markdown(
 
 
 
-# Pie Chart for Employment vs Unemployment with Year Filter
+# Pie Chart for Employment vs Unemployment 
 st.subheader("📊 Civilian Employment vs Civilian Unemployment")
 
 # Filter data based on the selected year range
@@ -299,16 +299,19 @@ fig_pie = px.pie(
 st.plotly_chart(fig_pie, use_container_width=True)
 
 
-# civilian text
+
 # Civilian Text
 st.markdown(
     """
-    <div style="font-size:17px; line-height:1.5;">
+    <div style="font-size:18px; line-height:1.5;">
         The pie chart shows the proportions of civilian employment in blue and civilian unemployment in red.
         You can select the year range on the left in the sidebar to compare different years.
         <br><br>
-        There it is again! You can find the effect of the pandemic on unemployment. In 2020, unemployment jumped from 3.6 to 8.06!
+        There it is again!🦠  You can find the effect of the pandemic on unemployment. In 2020, unemployment jumped from 3.6 to 8.06!
+        
     </div>
+    
+    
     """,
     unsafe_allow_html=True
 )
