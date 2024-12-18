@@ -1,17 +1,6 @@
-
 import streamlit as st
-#st.write("Hello World")
 import pandas as pd
-import os
-
-
-st.title("U.S.A. Labor Statistics")
-st.markdown("### Visualizing trends in employment, unemployment, and earnings data")
-
-
-DATA_FILE = "BLS_data.csv"
-
-df = pd.read_csv(DATA_FILE)
+import matplotlib.pyplot as plt
 
 
 series_names = {
@@ -22,34 +11,40 @@ series_names = {
     "CES0500000002": "Average Weekly Hours of All Employees",
     "CES0500000003": "Average Hourly Earnings of All Employees"
 }
+# Load data
+@st.cache
+def load_data():
+    return pd.read_csv('BLS_data.csv', parse_dates=['date'])
 
-# Replace series IDs with user-friendly names
-df['series_name'] = df['series_id'].map(series_names)
+data = load_data()
 
-# Sidebar Filters
-st.sidebar.header("Filter Options")
+# Add a column for human-readable series names
+data['series_name'] = data['series_id'].map(series_names)
+data['series_name'].fillna('Unknown Series', inplace=True)
+
+
+st.title("US Labor Statistics Dashboard")
+st.write("""
+This dashboard provides some visualization  of labor statistics released by the Bureau of Labor Statistics (BLS). 
+Select filters below to explore features like employment, unemployment, and wages over time.
+""")
+
+
+# Sidebar filters
+st.sidebar.header("Filters")
 selected_series = st.sidebar.multiselect(
-    "Select Data Series",
-    options=df['series_name'].unique(),
-    default=df["Average Weekly Hours of All Employees", "Average Hourly Earnings of All Employees"].unique()
+    "Select Data Series:",
+    options=data['series_id'].unique(),
+    default=["Total Nonfarm Employment", "Unemployment Rate"]
 )
 
-start_date = st.sidebar.date_input("Start Date", value=df['date'].min())
-end_date = st.sidebar.date_input("End Date", value=df['date'].max())
-
-# Filter Data
-filtered_data = df[
-    (df['series_name'].isin(selected_series)) &
-    (df['date'] >= pd.Timestamp(start_date)) &
-    (df['date'] <= pd.Timestamp(end_date))
+# Map selected series names back to series IDs
+selected_series_ids = [
+    series_id for series_id, name in series_names.items() if name in selected_series_names
 ]
-
-# Display Filtered Data
-st.write("### Filtered Data")
-st.dataframe(filtered_data)
-
-# Visualization
-st.write("### Data Trends Over Time")
-for series in selected_series:
-    series_data = filtered_data[filtered_data['series_name'] == series]
-    st.line_chart(series_data.set_index('date')['value'], use_container_width=True)
+selected_years = st.sidebar.slider(
+    "Select Year Range:",
+    min_value=int(data['year'].min()),
+    max_value=int(data['year'].max()),
+    value=(2019, int(data['year'].max()))
+)
