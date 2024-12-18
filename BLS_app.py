@@ -7,7 +7,7 @@ import plotly.express as px
 st.set_page_config(
     page_title="US Labor Market Dashboard",
     page_icon="📊",
-    layout="centered"
+    layout="wide"
 )
 
 # Mapping of series IDs to human-readable names
@@ -154,11 +154,6 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 
 
 
-
-
-
-
-
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
@@ -223,7 +218,35 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 
+# Interactive Pie Chart for Employment vs Unemployment with Year Filter
+st.subheader("Interactive Pie Chart: Employment vs Unemployment")
 
+# Filter data based on the selected year range
+filtered_employment = data[(data['series_id'] == 'LNS12000000') & (data['year'].between(selected_years[0], selected_years[1]))]
+filtered_unemployment = data[(data['series_id'] == 'LNS13000000') & (data['year'].between(selected_years[0], selected_years[1]))]
+
+# Aggregate the total values over the selected year range
+employment_total = filtered_employment['value'].sum()
+unemployment_total = filtered_unemployment['value'].sum()
+
+# Create a DataFrame for the pie chart
+pie_data = pd.DataFrame({
+    "Category": ["Employment", "Unemployment"],
+    "Value": [employment_total, unemployment_total]
+})
+
+# Create the pie chart
+fig_pie = px.pie(
+    pie_data,
+    names="Category",
+    values="Value",
+    title=f"Employment vs Unemployment ({selected_years[0]} - {selected_years[1]})",
+    color="Category",
+    color_discrete_map={"Employment": "blue", "Unemployment": "red"}
+)
+
+# Display the pie chart
+st.plotly_chart(fig_pie, use_container_width=True)
 
 
 
