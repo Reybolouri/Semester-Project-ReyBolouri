@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Set page configuration
+# Set page configuration 
 st.set_page_config(
     page_title="US Labor Market Dashboard",
     page_icon="📊",
@@ -51,15 +51,9 @@ st.markdown(
 )
 
 
-
 # Sidebar Enhancements
-st.sidebar.header("Filters 🔍")
-st.sidebar.markdown(
-    """
-    <p style="font-size: 14px; color: gray;">Use the filters below to customize the dashboard.</p>
-    """,
-    unsafe_allow_html=True
-)
+st.sidebar.header("Filters :mag: ")
+st.sidebar.write("Use the filters below to customize the dashboard.")
 
 # Dynamically assign defaults based on available options
 available_options = data['series_name'].unique()
@@ -105,19 +99,19 @@ filtered_data = data[
     (data['year'].between(selected_years[0], selected_years[1]))
 ]
 
-# Dashboard Title
+# Dashboard Title and Description
 st.markdown(
     """
     <div style="text-align: center; padding: 10px 0;">
         <h1 style="color:#0D47A1;">US Labor Market Dashboard</h1>
-        <p style="color:gray; font-size: 16px;">Unemployment and labor trends over the years, sourced from the Bureau of Labor Statistics.</p>
+        <p style="color:gray;">Unemployment and labor trends over the years, sourced from the Bureau of Labor Statistics.</p>
     </div>
     """,
     unsafe_allow_html=True
 )
 
 # Interactive Plot: Unemployment Rates
-st.subheader("📈 Unemployment Rates")
+st.subheader(" :chart_with_upwards_trend: Unemployment Rates")
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
 fig_unemployment = go.Figure()
 
@@ -142,7 +136,7 @@ fig_unemployment.update_layout(
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
-st.subheader("👷‍♂️ Number of Nonfarm Employment")
+st.subheader(":construction_worker: Number of Nonfarm Employment")
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
@@ -169,7 +163,7 @@ st.plotly_chart(fig_nonfarm, use_container_width=True)
 # COVID-19's Impact
 st.markdown(
     """
-    <div style="font-size:16px; line-height:1.6; margin-top: 20px;">
+    <div style="font-size:18px; line-height:1.6;">
         <h3>🦠 COVID-19's Impact on the Labor Market</h3>
         Wow! The impact of COVID-19 on the labor market is hard to miss. 
         In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
@@ -181,8 +175,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Relationship Between Weekly Hours and Hourly Earnings
-st.subheader("⏱️💰 Trends: Weekly Hours vs Hourly Earnings Over Time")
+
+
+
+
+
+
+# Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
+st.subheader(":timer_clock: :heavy_dollar_sign: Trends: Weekly Hours vs Hourly Earnings Over Time")
+
 hours_data = data[data['series_id'] == 'CES0500000002']
 earnings_data = data[data['series_id'] == 'CES0500000003']
 merged_data = pd.merge(
@@ -243,19 +244,25 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
+
 # Interactive Pie Chart for Employment vs Unemployment with Year Filter
 st.subheader("📊 Civilian Employment vs Civilian Unemployment")
+
+# Filter data based on the selected year range
 filtered_employment = data[(data['series_id'] == 'LNS12000000') & (data['year'].between(selected_years[0], selected_years[1]))]
 filtered_unemployment = data[(data['series_id'] == 'LNS13000000') & (data['year'].between(selected_years[0], selected_years[1]))]
 
+# Aggregate the total values over the selected year range
 employment_total = filtered_employment['value'].sum()
 unemployment_total = filtered_unemployment['value'].sum()
 
+# Create a DataFrame for the pie chart
 pie_data = pd.DataFrame({
     "Category": ["Employment", "Unemployment"],
     "Value": [employment_total, unemployment_total]
 })
 
+# Create the pie chart
 fig_pie = px.pie(
     pie_data,
     names="Category",
@@ -265,18 +272,21 @@ fig_pie = px.pie(
     color_discrete_map={"Employment": "blue", "Unemployment": "red"}
 )
 
+# Display the pie chart
 st.plotly_chart(fig_pie, use_container_width=True)
 
+
+
 # Summary Statistics
-st.subheader("📋 Summary Statistics")
+st.subheader(":clipboard: Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
 
-# Filtered Data Table
-st.subheader("📑 Filtered Data Table")
+# Data Table
+st.subheader("📑Filtered Data Table")
 st.write(filtered_data)
 
-# Download Button
+# Download button for filtered data
 st.download_button(
     label="⬇️ Download Filtered Data",
     data=filtered_data.to_csv(index=False),
