@@ -12,7 +12,7 @@ series_names = {
     "CES0500000003": "Average Hourly Earnings of All Employees"
 }
 # Load data
-@st.cache
+@st.cache_data
 def load_data():
     return pd.read_csv('BLS_data.csv', parse_dates=['date'])
 
