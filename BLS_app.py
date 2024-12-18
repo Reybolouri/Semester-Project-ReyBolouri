@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 
 # Set page configuration for a wider layout
@@ -210,6 +211,40 @@ fig.update_layout(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
+# Animated Bar Chart: Civilian Employment
+st.subheader("Animated Bar Chart: Civilian Employment Over Time")
+employment_data = data[data['series_id'] == 'LNS12000000']
+fig_employment = px.bar(
+    employment_data,
+    x="value",
+    y="date",
+    orientation="h",
+    title="Civilian Employment Over Time",
+    labels={"value": "Employment (in thousands)", "date": "Date"},
+    animation_frame=employment_data['date'].dt.year.astype(str),
+    color="value",
+    color_continuous_scale="Blues"
+)
+fig_employment.update_layout(yaxis=dict(categoryorder="total ascending"))
+st.plotly_chart(fig_employment)
+
+# Animated Bar Chart: Civilian Unemployment
+st.subheader("Animated Bar Chart: Civilian Unemployment Over Time")
+unemployment_data = data[data['series_id'] == 'LNS13000000']
+fig_unemployment_animated = px.bar(
+    unemployment_data,
+    x="value",
+    y="date",
+    orientation="h",
+    title="Civilian Unemployment Over Time",
+    labels={"value": "Unemployment (in thousands)", "date": "Date"},
+    animation_frame=unemployment_data['date'].dt.year.astype(str),
+    color="value",
+    color_continuous_scale="Reds"
+)
+fig_unemployment_animated.update_layout(yaxis=dict(categoryorder="total ascending"))
+st.plotly_chart(fig_unemployment_animated)
 
 # Summary Statistics
 st.subheader("Summary Statistics")
