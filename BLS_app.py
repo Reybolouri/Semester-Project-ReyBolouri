@@ -258,6 +258,7 @@ st.markdown(
     <div style="font-size:17px; line-height:1.5;">
         <h3> The plot above shows the weekly hours of work in comparison to the compensation. 
         You can view the exact values by hovering over the plot.
+        <br><br>
         Overall the average hourly earnings seems to be increasing throughout the years and the average weekly hours of work follows the same trend.
         However other economical factors,like inflation and job market need to be fully studied for a better interpretation.
         </p>
@@ -265,6 +266,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 # Pie Chart for Employment vs Unemployment with Year Filter
@@ -304,6 +306,7 @@ st.markdown(
     <div style="font-size:17px; line-height:1.5;">
         <h3> The pie chart shows the proportions of civilian employment in blue and civilian unemployment in red.
         You can select the year range on the left in sidebar to compare different years.
+        <br><br>
         There it is again! You cab find the effect of the pandemic on unemployment.In 2020, unemployment jumped from 3.6 to 8.06! 
         </p>
     </div>
