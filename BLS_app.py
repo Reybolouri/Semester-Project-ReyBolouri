@@ -226,11 +226,14 @@ st.plotly_chart(fig, use_container_width=True)
 
 #  Civilian Employment and Unemployment
 st.subheader("Civilian Employment vs Civilian Unemployment")
-
+selected_year = st.sidebar.slider(
+    "Select Year for Pie Chart:",
+    options=sorted(data['date'].dt.year.unique())
+)
 
 # Filter data for the selected year
-employment_data = data[(data['series_id'] == 'LNS12000000') & (data['date'].dt.year ==merged_data['date'] )]
-unemployment_data = data[(data['series_id'] == 'LNS13000000') & (data['date'].dt.year == merged_data['date'])]
+employment_data = data[(data['series_id'] == 'LNS12000000') & (data['date'].dt.year == selected_year)]
+unemployment_data = data[(data['series_id'] == 'LNS13000000') & (data['date'].dt.year == selected_year)]
 
 # Aggregate total employment and unemployment values for the selected year
 employment_total = employment_data['value'].sum()
@@ -254,71 +257,6 @@ fig_pie = px.pie(
 
 # Display the pie chart in Streamlit
 st.plotly_chart(fig_pie, use_container_width=True)
-
-
-
-
-
-
-
-# Dual-Line Chart: Civilian Employment and Unemployment
-st.subheader("Civilian Employment and Unemployment Trends")
-
-# Filter data for employment and unemployment
-employment_data = data[data['series_id'] == 'LNS12000000']
-unemployment_data = data[data['series_id'] == 'LNS13000000']
-
-# Merge the two datasets on the date
-merged_data = pd.merge(
-    employment_data[['date', 'value']].rename(columns={'value': 'employment'}),
-    unemployment_data[['date', 'value']].rename(columns={'value': 'unemployment'}),
-    on='date'
-)
-
-# Create the dual-line chart
-fig_dual_line = go.Figure()
-
-# Add Civilian Employment line
-fig_dual_line.add_trace(
-    go.Scatter(
-        x=merged_data['date'],
-        y=merged_data['employment'],
-        mode='lines+markers',
-        name="Civilian Employment",
-        line=dict(color='blue'),
-        hovertemplate="Date: %{x}<br>Employment: %{y}<extra></extra>"
-    )
-)
-
-# Add Civilian Unemployment line
-fig_dual_line.add_trace(
-    go.Scatter(
-        x=merged_data['date'],
-        y=merged_data['unemployment'],
-        mode='lines+markers',
-        name="Civilian Unemployment",
-        line=dict(color='red'),
-        hovertemplate="Date: %{x}<br>Unemployment: %{y}<extra></extra>"
-    )
-)
-
-# Customize layout
-fig_dual_line.update_layout(
-    title="Civilian Employment and Unemployment Trends",
-    xaxis_title="Date",
-    yaxis_title="Value (in thousands)",
-    template="plotly_white",
-    hovermode="x unified",
-    legend=dict(title="Series")
-)
-
-# Display the plot in Streamlit
-st.plotly_chart(fig_dual_line, use_container_width=True)
-
-
-
-
-
 
 
 
