@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+
 # Mapping of series IDs to human-readable names
 series_names = {
     "LNS12000000": "Civilian Employment",
