@@ -146,6 +146,7 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 
 
 
+
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
@@ -160,28 +161,45 @@ merged_data = pd.merge(
     on='date'
 )
 
-# Create the dual-axis time series plot
-fig, ax1 = plt.subplots(figsize=(10, 6))
+# Create an interactive Plotly figure
+fig = go.Figure()
 
-# Plot "Average Weekly Hours" on the left y-axis
-color = 'tab:blue'
-ax1.set_xlabel("Date")
-ax1.set_ylabel("Average Weekly Hours", color=color)
-ax1.plot(merged_data['date'], merged_data['avg_weekly_hours'], color=color, label="Weekly Hours")
-ax1.tick_params(axis='y', labelcolor=color)
+# Add "Average Weekly Hours" as a line plot
+fig.add_trace(
+    go.Scatter(
+        x=merged_data['date'],
+        y=merged_data['avg_weekly_hours'],
+        mode='lines+markers',
+        name="Average Weekly Hours",
+        line=dict(color='blue'),
+        hovertemplate="Date: %{x}<br>Weekly Hours: %{y:.2f}<extra></extra>"
+    )
+)
 
-# Plot "Average Hourly Earnings" on the right y-axis
-ax2 = ax1.twinx()  # Create a second y-axis sharing the same x-axis
-color = 'tab:orange'
-ax2.set_ylabel("Average Hourly Earnings ($)", color=color)
-ax2.plot(merged_data['date'], merged_data['avg_hourly_earnings'], color=color, label="Hourly Earnings")
-ax2.tick_params(axis='y', labelcolor=color)
+# Add "Average Hourly Earnings" as a line plot
+fig.add_trace(
+    go.Scatter(
+        x=merged_data['date'],
+        y=merged_data['avg_hourly_earnings'],
+        mode='lines+markers',
+        name="Average Hourly Earnings",
+        line=dict(color='orange'),
+        hovertemplate="Date: %{x}<br>Hourly Earnings: $%{y:.2f}<extra></extra>"
+    )
+)
 
-# Add a title and grid
-fig.suptitle("Average Weekly Hours vs Average Hourly Earnings Over Time")
-ax1.grid(True)
+# Customize layout
+fig.update_layout(
+    title="Interactive Trends: Weekly Hours vs Hourly Earnings",
+    xaxis_title="Date",
+    yaxis_title="Value",
+    legend_title="Metric",
+    template="plotly_white",
+    hovermode="x unified"
+)
 
-st.pyplot(fig)
+# Display the interactive Plotly figure in Streamlit
+st.plotly_chart(fig, use_container_width=True)
 
 
 
