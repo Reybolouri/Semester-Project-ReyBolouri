@@ -3,14 +3,14 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-# Set page configuration for a wider layout
+# Set page configuration 
 st.set_page_config(
     page_title="US Labor Market Dashboard",
-    page_icon="📊",
+    page_icon=":bar_chart:",
     layout="wide"
 )
 
-# Mapping of series IDs to human-readable names
+# Mapping series IDs to human-readable names
 series_names = {
     "LNS12000000": "Civilian Employment",
     "LNS13000000": "Civilian Unemployment",
@@ -33,7 +33,7 @@ data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
 # Sidebar Enhancements
-st.sidebar.header("Filters🔍")
+st.sidebar.header("Filters:mag:")
 st.sidebar.write("Use the filters below to customize the dashboard.")
 
 # Dynamically assign defaults based on available options
