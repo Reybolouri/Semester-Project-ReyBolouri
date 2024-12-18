@@ -116,7 +116,7 @@ fig_unemployment.update_layout(
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
-st.subheader("Number of Nonfarm Workers")
+st.subheader("Number of Nonfarm Employment")
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
@@ -212,18 +212,37 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 # Summary Statistics
-st.subheader("Summary Statistics")
-summary = filtered_data.groupby('series_name')['value'].describe()
+# Set page title
+st.set_page_config(page_title="Summary Statistics", layout="centered")
+
+# Load data function
+@st.cache_data
+def load_data():
+    return pd.read_csv('BLS_data.csv', parse_dates=['date'])
+
+# Load the data
+data = load_data()
+
+# Add a column for human-readable series names
+series_names = {
+    "LNS12000000": "Civilian Employment",
+    "LNS13000000": "Civilian Unemployment",
+    "LNS14000000": "Unemployment Rate",
+    "CES0000000001": "Total Nonfarm Employment",
+    "CES0500000002": "Average Weekly Hours of All Employees",
+    "CES0500000003": "Average Hourly Earnings of All Employees"
+}
+data['series_name'] = data['series_id'].map(series_names)
+
+# Summary Statistics
+st.title("Summary Statistics")
+st.write("Explore the summary statistics for the selected data series.")
+
+summary = data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
 
-# Data Table
-st.subheader("Filtered Data Table")
-st.write(filtered_data)
-
-# Download button for filtered data
-st.download_button(
-    label="Download Filtered Data",
-    data=filtered_data.to_csv(index=False),
-    file_name="filtered_bls_data.csv",
-    mime="text/csv"
+st.markdown(
+    """
+    **Note**: These statistics provide insights into the distribution of the selected metrics.
+    """
 )
