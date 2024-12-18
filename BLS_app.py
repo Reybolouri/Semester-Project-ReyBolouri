@@ -144,13 +144,16 @@ st.plotly_chart(fig_nonfarm, use_container_width=True)
 # COVID-19's Impact
 st.markdown(
     """
-    ### :microbe: COVID-19's Impact on the Labor Market
-    Wow! The impact of COVID-19 on the labor market is hard to miss. 
-    In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
-    <br><br>
-    Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. 
-    It was one of the most sudden and dramatic economic shocks in history.
-    """
+    <div style="font-size:18px; line-height:1.6;">
+        <h3> ### :microbe: COVID-19's Impact on the Labor Market</h3>
+        Wow! The impact of COVID-19 on the labor market is hard to miss. 
+        In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
+        <br><br>
+        Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. 
+        It was one of the most sudden and dramatic economic shocks in history.
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 
