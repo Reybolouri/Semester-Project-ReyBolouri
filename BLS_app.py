@@ -145,7 +145,7 @@ st.plotly_chart(fig_nonfarm, use_container_width=True)
 st.markdown(
     """
     <div style="font-size:18px; line-height:1.6;">
-        <h3> ### :microbe: COVID-19's Impact on the Labor Market</h3>
+        <h3>🦠 COVID-19's Impact on the Labor Market</h3>
         Wow! The impact of COVID-19 on the labor market is hard to miss. 
         In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
         <br><br>
@@ -161,8 +161,9 @@ st.markdown(
 
 
 
+
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
-st.subheader("⏱️💰Trends: Weekly Hours vs Hourly Earnings Over Time")
+st.subheader(":timer_clock: :heavy_dollar_sign: Trends: Weekly Hours vs Hourly Earnings Over Time")
 
 hours_data = data[data['series_id'] == 'CES0500000002']
 earnings_data = data[data['series_id'] == 'CES0500000003']
@@ -258,7 +259,7 @@ st.plotly_chart(fig_pie, use_container_width=True)
 
 
 # Summary Statistics
-st.subheader("📋Summary Statistics")
+st.subheader(":clipboard: Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
 
