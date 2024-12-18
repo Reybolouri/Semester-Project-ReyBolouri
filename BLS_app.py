@@ -107,7 +107,7 @@ st.markdown(
         </p>
         <p>
             Use the filters on the sidebar to customize timeline and series od data. You can find and download the filtered data at the bottom of the page.
-            Thank you! 
+            Thank you!
         </p>
     </div>
     """,
@@ -176,6 +176,7 @@ st.markdown(
         <br><br>
         Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. 
         It was one of the most sudden and dramatic economic shocks in history.
+        </p>
     </div>
     """,
     unsafe_allow_html=True
@@ -287,6 +288,9 @@ st.plotly_chart(fig_pie, use_container_width=True)
 st.subheader(":clipboard: Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
+
+# Ensure the 'year' column is formatted correctly
+filtered_data['year'] = filtered_data['year'].astype(int)
 
 # Data Table
 st.subheader("📑Filtered Data Table")
