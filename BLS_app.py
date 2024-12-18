@@ -79,15 +79,14 @@ filtered_data = data[
 st.markdown(
     """
     <div style="text-align: center; padding: 10px 0;">
-        <h1 style="color:#4CAF50;">US Labor Market Dashboard</h1>
-        <p style="color:gray;">Insights into key labor statistics from the Bureau of Labor Statistics (BLS).</p>
+        <h1 style="color:#FFAB91;">US Labor Market</h1>
+        <p style="color:gray;">Unemployment and Labor trends over the years. Data sourced from the Bureau of Labor Statistics (BLS).</p>
     </div>
     """,
     unsafe_allow_html=True
 )
 
 
-st.write("Use the sidebar to filter data by series and year range. Visualizations and summaries will update dynamically.")
 
 # Interactive Plot: Unemployment Rates
 st.subheader("Unemployment Rate Over Time")
