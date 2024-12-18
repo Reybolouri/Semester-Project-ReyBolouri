@@ -25,23 +25,55 @@ data = load_data()
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
+# Sidebar: Enhance UI
+st.sidebar.markdown(
+    """
+    <style>
+    .sidebar .sidebar-content {
+        background-color: #f8f9fa; /* Light gray background */
+        border-radius: 10px;      /* Rounded corners */
+        padding: 10px;            /* Padding for spacing */
+    }
+    .sidebar h3 {
+        color: #4CAF50;           /* Green accent for headers */
+        margin-bottom: 5px;
+    }
+    .sidebar p {
+        color: #6c757d;           /* Subtle gray text */
+        font-size: 14px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Sidebar Header
+st.sidebar.header("Filters")
+
+# Sidebar Introduction
+st.sidebar.markdown(
+    """
+    Use the filters below to customize the dashboard:
+    - Select data series
+    - Choose a year range
+    """,
+    unsafe_allow_html=True
+)
+
 # Debugging: Check unique values in series_name
 st.sidebar.write("Available Series Options:", data['series_name'].unique())
 
 # Dynamically assign defaults based on available options
 available_options = data['series_name'].unique()
 default_options = ["Civilian Employment",
-                    "Civilian Unemployment", 
-                    "Unemployment Rate",
-                    "Total Nonfarm Employment",
-                    "Average Weekly Hours of All Employees",
-                    "Average Hourly Earnings of All Employees"]
+                   "Civilian Unemployment",
+                   "Unemployment Rate",
+                   "Total Nonfarm Employment",
+                   "Average Weekly Hours of All Employees",
+                   "Average Hourly Earnings of All Employees"]
 
 # Ensure default values exist in available options
 default_options = [opt for opt in default_options if opt in available_options]
-
-# Sidebar filters
-st.sidebar.header("Filters")
 
 # Multiselect for series names
 selected_series_names = st.sidebar.multiselect(
@@ -56,6 +88,17 @@ selected_years = st.sidebar.slider(
     min_value=int(data['year'].min()),
     max_value=int(data['year'].max()),
     value=(2019, int(data['year'].max()))
+)
+
+# Add a divider and footer in the sidebar
+st.sidebar.markdown(
+    """
+    ---
+    <p style="font-size: 12px; color: #6c757d;">
+    Built with ❤️ using Streamlit. Data sourced from the Bureau of Labor Statistics.
+    </p>
+    """,
+    unsafe_allow_html=True
 )
 
 # Map selected series names back to series IDs
@@ -75,7 +118,6 @@ st.write("""
 This dashboard provides insights into key labor statistics from the Bureau of Labor Statistics (BLS).
 Select the data series and time range below to explore trends and summaries.
 """)
-
 
 # Interactive Plot: Unemployment Rate
 st.subheader("Unemployment Rate Over Time")
@@ -108,14 +150,13 @@ fig_unemployment.update_layout(
 # Display the plot in Streamlit
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
-
 # Interactive Plot: Total Nonfarm Workers
 st.subheader("Total Nonfarm Workers Over Time")
 
 # Filter data for the Total Nonfarm Workers series
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 
-#  interactive plot
+# Create an interactive plot
 fig_nonfarm = go.Figure()
 
 fig_nonfarm.add_trace(
@@ -140,14 +181,13 @@ fig_nonfarm.update_layout(
 # Display the plot in Streamlit
 st.plotly_chart(fig_nonfarm, use_container_width=True)
 
-#  COVID-19's impact
+# COVID-19's Impact
 st.markdown("""
-###
-Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unemployment rates skyrocketed, and millions of jobs seemed to disappear almost overnight. 
+### COVID-19's Impact on the Labor Market
+Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unemployment rates skyrocketed, and millions of jobs seemed to disappear almost overnight.
 
 Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
 """)
-#######################################################################
 
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
@@ -219,15 +259,6 @@ fig.update_layout(
 
 # Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
-
-###################################
-
-
-
-####################################
-
-
-
 
 # Summary Statistics
 st.subheader("Summary Statistics")
