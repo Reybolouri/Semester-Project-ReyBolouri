@@ -227,8 +227,10 @@ st.plotly_chart(fig, use_container_width=True)
 #  Civilian Employment and Unemployment
 st.subheader("Civilian Employment vs Civilian Unemployment")
 selected_year = st.sidebar.selectbox(
-    "Select Year for Pie Chart:",
-    options=sorted(data['date'].dt.year.unique())
+     "Select Year Range:",
+    min_value=int(data['year'].min()),
+    max_value=int(data['year'].max()),
+    value=(2019, int(data['year'].max()))
 )
 
 # Filter data for the selected year
@@ -317,6 +319,80 @@ fig_dual_line.update_layout(
 
 # Display the plot in Streamlit
 st.plotly_chart(fig_dual_line, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
+
+
+# Interactive Stacked Area Chart: Employment and Unemployment
+st.subheader("Stacked Area Chart: Employment and Unemployment Over Time")
+
+# Filter data for employment and unemployment
+employment_data = data[data['series_id'] == 'LNS12000000']
+unemployment_data = data[data['series_id'] == 'LNS13000000']
+
+# Merge the two datasets on the date
+merged_area_data = pd.merge(
+    employment_data[['date', 'value']].rename(columns={'value': 'employment'}),
+    unemployment_data[['date', 'value']].rename(columns={'value': 'unemployment'}),
+    on='date'
+)
+
+# Add a "Total" column for stacking
+merged_area_data['total'] = merged_area_data['employment'] + merged_area_data['unemployment']
+
+# Create the stacked area chart
+fig_stacked_area = go.Figure()
+
+# Add Civilian Employment area
+fig_stacked_area.add_trace(
+    go.Scatter(
+        x=merged_area_data['date'],
+        y=merged_area_data['employment'],
+        mode='lines',
+        fill='tonexty',
+        name="Civilian Employment",
+        line=dict(color='blue'),
+        hovertemplate="Date: %{x}<br>Employment: %{y}<extra></extra>"
+    )
+)
+
+# Add Civilian Unemployment area
+fig_stacked_area.add_trace(
+    go.Scatter(
+        x=merged_area_data['date'],
+        y=merged_area_data['employment'] + merged_area_data['unemployment'],
+        mode='lines',
+        fill='tonexty',
+        name="Civilian Unemployment",
+        line=dict(color='red'),
+        hovertemplate="Date: %{x}<br>Unemployment: %{y}<extra></extra>"
+    )
+)
+
+# Customize layout
+fig_stacked_area.update_layout(
+    title="Employment and Unemployment Stacked Area Chart",
+    xaxis_title="Date",
+    yaxis_title="Value (in thousands)",
+    template="plotly_white",
+    hovermode="x unified",
+    legend=dict(title="Categories")
+)
+
+# Display the plot in Streamlit
+st.plotly_chart(fig_stacked_area, use_container_width=True)
+
+
+
+
 
 
 
