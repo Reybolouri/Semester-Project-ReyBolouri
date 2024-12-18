@@ -30,7 +30,7 @@ st.sidebar.write("Available Series Options:", data['series_name'].unique())
 
 # Dynamically assign defaults based on available options
 available_options = data['series_name'].unique()
-default_options = ["Total Nonfarm Employment", "Unemployment Rate"]
+default_options = ["Civilian Employment", "Total Nonfarm Employment", "Unemployment Rate"]
 
 # Ensure default values exist in available options
 default_options = [opt for opt in default_options if opt in available_options]
@@ -200,6 +200,70 @@ fig.update_layout(
 
 # Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+# Interactive Funnel Chart: Weekly Hours and Hourly Earnings
+st.subheader("Funnel Chart: Trends in Weekly Hours and Hourly Earnings")
+
+# Filter data for the two relevant series
+hours_data = data[data['series_id'] == 'CES0500000002']
+earnings_data = data[data['series_id'] == 'CES0500000003']
+
+# Merge the two datasets on the date
+merged_data = pd.merge(
+    hours_data[['date', 'value']].rename(columns={'value': 'avg_weekly_hours'}),
+    earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
+    on='date'
+)
+
+# Compute cumulative changes
+merged_data['change_in_weekly_hours'] = merged_data['avg_weekly_hours'].diff().fillna(0)
+merged_data['change_in_hourly_earnings'] = merged_data['avg_hourly_earnings'].diff().fillna(0)
+
+# Aggregate cumulative changes
+funnel_data = {
+    "Metric": ["Weekly Hours", "Hourly Earnings"],
+    "Start Value": [merged_data['avg_weekly_hours'].iloc[0], merged_data['avg_hourly_earnings'].iloc[0]],
+    "End Value": [merged_data['avg_weekly_hours'].iloc[-1], merged_data['avg_hourly_earnings'].iloc[-1]],
+}
+
+# Create a DataFrame for the funnel data
+funnel_df = pd.DataFrame(funnel_data)
+
+# Build the funnel chart
+fig = go.Figure()
+
+fig.add_trace(
+    go.Funnel(
+        y=funnel_df["Metric"],
+        x=funnel_df["End Value"] - funnel_df["Start Value"],
+        textinfo="value+percent initial",
+        marker=dict(colors=["blue", "orange"])
+    )
+)
+
+# Customize the layout
+fig.update_layout(
+    title="Cumulative Changes in Weekly Hours and Hourly Earnings",
+    xaxis_title="Change",
+    yaxis_title="Metric",
+    template="plotly_white"
+)
+
+# Display the funnel chart
+st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
 
 
 
