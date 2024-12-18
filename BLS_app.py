@@ -226,18 +226,16 @@ st.plotly_chart(fig, use_container_width=True)
 
 #  Civilian Employment and Unemployment
 st.subheader("Civilian Employment vs Civilian Unemployment")
-selected_year = st.sidebar.slider(
+selected_year = st.sidebar.selectbox(
     "Select Year for Pie Chart:",
-    min_value=int(data['date'].dt.year.min()),
-    max_value=int(data['date'].dt.year.max()),
-    value=int(data['date'].dt.year.max())
+    options=sorted(data['date'].dt.year.unique())
 )
 
 # Filter data for the selected year
 employment_data = data[(data['series_id'] == 'LNS12000000') & (data['date'].dt.year == selected_year)]
 unemployment_data = data[(data['series_id'] == 'LNS13000000') & (data['date'].dt.year == selected_year)]
 
-# Sum values for the selected year
+# Aggregate total employment and unemployment values for the selected year
 employment_total = employment_data['value'].sum()
 unemployment_total = unemployment_data['value'].sum()
 
@@ -247,7 +245,7 @@ pie_data = pd.DataFrame({
     "Value": [employment_total, unemployment_total]
 })
 
-# Create the pie chart
+# Create the interactive pie chart
 fig_pie = px.pie(
     pie_data,
     names="Category",
@@ -257,6 +255,7 @@ fig_pie = px.pie(
     color_discrete_map={"Employment": "blue", "Unemployment": "red"}
 )
 
+# Display the pie chart in Streamlit
 st.plotly_chart(fig_pie, use_container_width=True)
 
 
