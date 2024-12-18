@@ -95,18 +95,19 @@ st.markdown(
 # Introduction Section
 st.markdown(
     """
-    <div style="font-size:16px; line-height:1.6;">
+    <div style="font-size:17px; line-height:1.5;;">
         <p>
-            Welcome to the US Labor Market Dashboard. This dashboard analyzes key labor statistics provided by the 
+            Welcome to the US Labor Market Dashboard! :wave: This dashboard analyzes key labor statistics provided by the 
             <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>, 
-            including civilian employment, unemployment, nonfarm employment rates, and earnings trends over time.
+            including civilian employment, unemployment, nonfarm employments, and average earnings trends over time.
         </p>
         <p>
-            It presents the data and its trends using dynamic and interactive visualizations, spanning the years since 2019, 
-            and is updated monthly with the latest data from the U.S. Bureau of Labor Statistics.
+            This dashboard presents the data and its trends using dynamic and interactive visualizations, spanning the years since 2019, 
+            and is dynamically updated monthly with the latest data from the U.S. Bureau of Labor Statistics.
         </p>
         <p>
-            Use the filters on the sidebar to customize your view and download filtered data for further analysis.
+            Use the filters on the sidebar to customize timeline and series od data. You can find and download the filtered data at the bottom of the page.
+            Thank you! 
         </p>
     </div>
     """,
@@ -168,7 +169,7 @@ st.plotly_chart(fig_nonfarm, use_container_width=True)
 # COVID-19's Impact
 st.markdown(
     """
-    <div style="font-size:18px; line-height:1.6;">
+    <div style="font-size:17px; line-height:1.5;">
         <h3>🦠 COVID-19's Impact on the Labor Market</h3>
         Wow! The impact of COVID-19 on the labor market is hard to miss. 
         In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
