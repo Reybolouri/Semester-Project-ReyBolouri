@@ -257,7 +257,7 @@ fig_pie = px.pie(
     color="Category",
     color_discrete_map={"Employment": "blue", "Unemployment": "red"}
 )
-
+st.plotly_chart(fig_pie, use_container_width=True)
 
 
 
