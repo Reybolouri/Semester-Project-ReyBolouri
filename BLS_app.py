@@ -48,3 +48,46 @@ selected_years = st.sidebar.slider(
     max_value=int(data['year'].max()),
     value=(2019, int(data['year'].max()))
 )
+# Filter by years
+selected_years = st.sidebar.slider(
+    "Select Year Range:",
+    min_value=int(data['year'].min()),
+    max_value=int(data['year'].max()),
+    value=(2019, int(data['year'].max()))
+)
+# Filter the data
+filtered_data = data[
+    (data['series_id'].isin(selected_series_ids)) &
+    (data['year'].between(selected_years[0], selected_years[1]))
+]
+# Line Chart Visualization
+st.subheader("Time Series Trends")
+fig, ax = plt.subplots(figsize=(10, 6))
+for series_id in selected_series_ids:
+    subset = filtered_data[filtered_data['series_id'] == series_id]
+    series_label = series_names.get(series_id, series_id)  # Get human-readable label
+    ax.plot(subset['date'], subset['value'], label=series_label)
+
+ax.set_xlabel("Date")
+ax.set_ylabel("Value")
+ax.legend(title="Series")
+ax.grid(True)
+
+st.pyplot(fig)
+
+# Summary Statistics
+st.subheader("Summary Statistics")
+summary = filtered_data.groupby('series_name')['value'].describe()
+st.dataframe(summary)
+
+# Data Table
+st.subheader("Filtered Data Table")
+st.write(filtered_data)
+
+# Download button for filtered data
+st.download_button(
+    label="Download Filtered Data",
+    data=filtered_data.to_csv(index=False),
+    file_name="filtered_bls_data.csv",
+    mime="text/csv"
+)
