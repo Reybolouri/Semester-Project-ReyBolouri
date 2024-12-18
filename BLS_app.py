@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+# Set page configuration for a wider layout
+st.set_page_config(page_title="US Labor Market Dashboard", layout="wide")
+
 # Mapping of series IDs to human-readable names
 series_names = {
     "LNS12000000": "Civilian Employment",
@@ -25,35 +28,8 @@ data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
 # Sidebar Enhancements
-st.sidebar.markdown(
-    """
-    <style>
-    .sidebar .sidebar-content {
-        background-color: #F5F5F5; /* Soft gray background */
-        padding: 20px;
-        border-radius: 10px;
-        font-family: 'Arial', sans-serif;
-    }
-    .sidebar .header {
-        color: #4CAF50; /* Green header color */
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 10px;
-    }
-    .sidebar .text {
-        color: #6c757d;
-        font-size: 14px;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-st.sidebar.markdown("<div class='header'>Filters</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<div class='text'>Customize the dashboard using the filters below.</div>", unsafe_allow_html=True)
-
-# Debugging: Check unique values in series_name
-st.sidebar.write("Available Series Options:", data['series_name'].unique())
+st.sidebar.header("Filters")
+st.sidebar.write("Use the filters below to customize the dashboard.")
 
 # Dynamically assign defaults based on available options
 available_options = data['series_name'].unique()
@@ -84,11 +60,8 @@ selected_years = st.sidebar.slider(
 st.sidebar.markdown(
     """
     ---
-    <p style="font-size: 12px; color: #6c757d;">
-    Data sourced from the [Bureau of Labor Statistics](https://www.bls.gov/home.htm).
-    </p>
-    """,
-    unsafe_allow_html=True
+    **Data Source:** [Bureau of Labor Statistics](https://www.bls.gov/home.htm)
+    """
 )
 
 # Map selected series names back to series IDs
@@ -105,23 +78,18 @@ filtered_data = data[
 # Dashboard Title and Description
 st.markdown(
     """
-    <h1 style="color:#4CAF50; text-align:center; margin-bottom:0;">
-        US Labor Market Dashboard
-    </h1>
-    <p style="text-align:center; font-size:16px; color:gray;">
-        Insights into labor statistics from the Bureau of Labor Statistics (BLS).
-    </p>
+    <div style="text-align: center; padding: 10px 0;">
+        <h1 style="color:#4CAF50;">US Labor Market Dashboard</h1>
+        <p style="color:gray;">Insights into key labor statistics from the Bureau of Labor Statistics (BLS).</p>
+    </div>
     """,
     unsafe_allow_html=True
 )
 
-st.write("""
-Explore trends by selecting data series and adjusting the time range.
-""")
+st.write("Use the sidebar to filter data by series and year range. Visualizations and summaries will update dynamically.")
 
 # Interactive Plot: Unemployment Rate
 st.subheader("Unemployment Rate Over Time")
-
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
 fig_unemployment = go.Figure()
 
@@ -147,7 +115,6 @@ st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
 st.subheader("Total Nonfarm Workers Over Time")
-
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
