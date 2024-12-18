@@ -117,7 +117,7 @@ fig_unemployment.update_layout(
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
-st.subheader("👷‍♂️Number of Nonfarm Employment")
+st.subheader(":construction_worker: Number of Nonfarm Employment")
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
