@@ -27,8 +27,7 @@ def load_data():
 
 # Load the data
 data = load_data()
-data['year'] = data['date'].dt.year
-data['year'] = data['year'].astype(int)  
+
 # Add a column for human-readable series names
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
@@ -107,7 +106,7 @@ st.markdown(
             and is dynamically updated monthly with the latest data from the U.S. Bureau of Labor Statistics.
         </p>
         <p>
-            Use the filters on the sidebar to customize timeline and series od data. You can find and download the filtered data at the bottom of the page.
+            Use the filters on the sidebar to customize timeline and series od data.
             Thank you!
         </p>
     </div>
@@ -290,17 +289,3 @@ st.subheader(":clipboard: Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
 
-# Ensure the 'year' column is formatted correctly
-filtered_data['year'] = filtered_data['year'].astype(int)
-
-# Data Table
-st.subheader("📑Filtered Data Table")
-st.write(filtered_data)
-
-# Download button for filtered data
-st.download_button(
-    label="⬇️ Download Filtered Data",
-    data=filtered_data.to_csv(index=False),
-    file_name="filtered_bls_data.csv",
-    mime="text/csv"
-)
