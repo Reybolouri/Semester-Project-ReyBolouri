@@ -35,7 +35,7 @@ default_options = ["Civilian Employment",
                     "Unemployment Rate",
                     "Total Nonfarm Employment",
                     "Average Weekly Hours of All Employees",
-                    "Average Weekly Hours of All Employees"]
+                    "Average Hourly Earnings of All Employees"]
 
 # Ensure default values exist in available options
 default_options = [opt for opt in default_options if opt in available_options]
