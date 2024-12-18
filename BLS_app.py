@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import plotly.graph_objects as go
 # Mapping of series IDs to human-readable names
 series_names = {
     "LNS12000000": "Civilian Employment",
@@ -70,20 +70,40 @@ This dashboard provides insights into key labor statistics from the Bureau of La
 Select the data series and time range below to explore trends and summaries.
 """)
 
-# Line Chart Visualization
-st.subheader("Time Series Trends")
-fig, ax = plt.subplots(figsize=(10, 6))
+# Interactive Line Chart Visualization with Plotly
+st.subheader("Interactive Time Series Trends")
+
+# Create an empty figure
+fig = go.Figure()
+
+# Add traces for each selected series
 for series_id in selected_series_ids:
     subset = filtered_data[filtered_data['series_id'] == series_id]
     series_label = series_names.get(series_id, series_id)  # Get human-readable label
-    ax.plot(subset['date'], subset['value'], label=series_label)
+    
+    # Add a line trace for the series
+    fig.add_trace(
+        go.Scatter(
+            x=subset['date'],
+            y=subset['value'],
+            mode='lines',
+            name=series_label
+        )
+    )
 
-ax.set_xlabel("Date")
-ax.set_ylabel("Value")
-ax.legend(title="Series")
-ax.grid(True)
+# Update layout for better aesthetics
+fig.update_layout(
+    title="Time Series Trends",
+    xaxis_title="Date",
+    yaxis_title="Value",
+    legend_title="Series",
+    hovermode="x unified",
+    template="plotly_white"
+)
 
-st.pyplot(fig)
+# Display the Plotly figure in Streamlit
+st.plotly_chart(fig, use_container_width=True)
+
 
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
