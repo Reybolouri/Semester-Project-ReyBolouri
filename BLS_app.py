@@ -77,7 +77,6 @@ Select the data series and time range below to explore trends and summaries.
 """)
 
 
-
 # Interactive Plot: Unemployment Rate
 st.subheader("Unemployment Rate Over Time")
 
@@ -116,7 +115,7 @@ st.subheader("Total Nonfarm Workers Over Time")
 # Filter data for the Total Nonfarm Workers series
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 
-# Create an interactive plot
+#  interactive plot
 fig_nonfarm = go.Figure()
 
 fig_nonfarm.add_trace(
@@ -148,25 +147,33 @@ Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unempl
 
 Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
 """)
+#######################################################################
 
+# Add filters for date range
+st.sidebar.header("Filters for Weekly Hours vs Hourly Earnings")
 
+# Date range filter
+min_date = pd.to_datetime(data['date'].min())
+max_date = pd.to_datetime(data['date'].max())
+start_date, end_date = st.sidebar.date_input(
+    "Select Date Range:",
+    [min_date, max_date],
+    min_value=min_date,
+    max_value=max_date
+)
 
+# Filter data for the two relevant series within the selected date range
+hours_data = data[(data['series_id'] == 'CES0500000002') & (data['date'] >= str(start_date)) & (data['date'] <= str(end_date))]
+earnings_data = data[(data['series_id'] == 'CES0500000003') & (data['date'] >= str(start_date)) & (data['date'] <= str(end_date))]
 
-# Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
-st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
-
-# Filter data for the two relevant series
-hours_data = data[data['series_id'] == 'CES0500000002']
-earnings_data = data[data['series_id'] == 'CES0500000003']
-
-# Merge the two datasets on the date
+# Merge the filtered datasets on the date
 merged_data = pd.merge(
     hours_data[['date', 'value']].rename(columns={'value': 'avg_weekly_hours'}),
     earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
     on='date'
 )
 
-# Create an interactive Plotly figure
+# Interactive Plotly figure with filtered data
 fig = go.Figure()
 
 # Add "Average Weekly Hours" as a line plot
