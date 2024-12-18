@@ -136,8 +136,13 @@ fig_nonfarm.update_layout(
 # Display the plot in Streamlit
 st.plotly_chart(fig_nonfarm, use_container_width=True)
 
+#  COVID-19's impact
+st.markdown("""
+###
+Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unemployment rates skyrocketed, and millions of jobs seemed to disappear almost overnight. 
 
-
+Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
+""")
 
 
 
