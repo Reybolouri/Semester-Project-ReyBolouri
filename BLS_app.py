@@ -32,23 +32,6 @@ data = load_data()
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
-# Introduction Section
-st.markdown(
-    """
-    <div style="text-align: center; padding: 15px 0; background-color: #f9f9f9; border-radius: 10px;">
-        <h2 style="color: #0D47A1;">Welcome to the US Labor Market Dashboard</h2>
-        <p style="color: gray; font-size: 16px;">
-            Explore key labor statistics provided by the <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>. 
-            This dashboard covers civilian employment, unemployment, nonfarm employment rates, and earnings trends over time. 
-            Data is presented dynamically, starting from 2019, and is updated monthly using the latest statistics from the Bureau of Labor Statistics.
-        </p>
-        <p style="font-size: 14px; color: #666;">
-            Use the filters on the sidebar to customize your view and download filtered data for further analysis.
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 
 # Sidebar Enhancements
@@ -109,6 +92,25 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+# Introduction Section
+st.markdown(
+    """
+    <div style="font-size:16px; line-height:1.6;">
+        <p>
+            This dashboard analyzes key labor statistics provided by the 
+            <a href="https://www.bls.gov/home.htm" style="color: #0D47A1;">Bureau of Labor Statistics</a>, 
+            including civilian employment, unemployment, nonfarm employment rates, and earnings trends over time. 
+            It spans data since 2019 and is updated monthly with the latest information.
+        </p>
+        <p>
+            Use the filters on the sidebar to customize your view, explore trends, and download filtered data for further analysis.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+
 
 # Interactive Plot: Unemployment Rates
 st.subheader(" :chart_with_upwards_trend: Unemployment Rates")
