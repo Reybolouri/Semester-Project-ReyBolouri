@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
+import plotly.express as px
 
 # Set page configuration for a wider layout
 st.set_page_config(
@@ -149,6 +149,16 @@ Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unempl
 Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
 """)
 
+
+
+
+
+
+
+
+
+
+
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
 st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
 
@@ -212,21 +222,22 @@ fig.update_layout(
 
 st.plotly_chart(fig, use_container_width=True)
 
+
+
 # Animated Bar Chart: Civilian Employment
 st.subheader("Animated Bar Chart: Civilian Employment Over Time")
 employment_data = data[data['series_id'] == 'LNS12000000']
 fig_employment = px.bar(
     employment_data,
-    x="value",
-    y="date",
-    orientation="h",
+    x="date",
+    y="value",
     title="Civilian Employment Over Time",
     labels={"value": "Employment (in thousands)", "date": "Date"},
     animation_frame=employment_data['date'].dt.year.astype(str),
     color="value",
     color_continuous_scale="Blues"
 )
-fig_employment.update_layout(yaxis=dict(categoryorder="total ascending"))
+fig_employment.update_layout(xaxis_title="Date", yaxis_title="Employment (in thousands)")
 st.plotly_chart(fig_employment)
 
 # Animated Bar Chart: Civilian Unemployment
@@ -234,17 +245,21 @@ st.subheader("Animated Bar Chart: Civilian Unemployment Over Time")
 unemployment_data = data[data['series_id'] == 'LNS13000000']
 fig_unemployment_animated = px.bar(
     unemployment_data,
-    x="value",
-    y="date",
-    orientation="h",
+    x="date",
+    y="value",
     title="Civilian Unemployment Over Time",
     labels={"value": "Unemployment (in thousands)", "date": "Date"},
     animation_frame=unemployment_data['date'].dt.year.astype(str),
     color="value",
     color_continuous_scale="Reds"
 )
-fig_unemployment_animated.update_layout(yaxis=dict(categoryorder="total ascending"))
+fig_unemployment_animated.update_layout(xaxis_title="Date", yaxis_title="Unemployment (in thousands)")
 st.plotly_chart(fig_unemployment_animated)
+
+
+
+
+
 
 # Summary Statistics
 st.subheader("Summary Statistics")
