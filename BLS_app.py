@@ -149,12 +149,17 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 """)
 #######################################################################
 
+import plotly.graph_objects as go
+
+# Ensure the 'date' column is in datetime format
+data['date'] = pd.to_datetime(data['date'])
+
 # Add filters for date range
 st.sidebar.header("Filters for Weekly Hours vs Hourly Earnings")
 
 # Date range filter
-min_date = pd.to_datetime(data['date'].min())
-max_date = pd.to_datetime(data['date'].max())
+min_date = data['date'].min()
+max_date = data['date'].max()
 start_date, end_date = st.sidebar.date_input(
     "Select Date Range:",
     [min_date, max_date],
@@ -162,9 +167,24 @@ start_date, end_date = st.sidebar.date_input(
     max_value=max_date
 )
 
+# Debugging: Print selected date range
+st.sidebar.write(f"Selected Date Range: {start_date} to {end_date}")
+
 # Filter data for the two relevant series within the selected date range
-hours_data = data[(data['series_id'] == 'CES0500000002') & (data['date'] >= str(start_date)) & (data['date'] <= str(end_date))]
-earnings_data = data[(data['series_id'] == 'CES0500000003') & (data['date'] >= str(start_date)) & (data['date'] <= str(end_date))]
+hours_data = data[
+    (data['series_id'] == 'CES0500000002') & 
+    (data['date'] >= pd.to_datetime(start_date)) & 
+    (data['date'] <= pd.to_datetime(end_date))
+]
+earnings_data = data[
+    (data['series_id'] == 'CES0500000003') & 
+    (data['date'] >= pd.to_datetime(start_date)) & 
+    (data['date'] <= pd.to_datetime(end_date))
+]
+
+# Debugging: Display filtered datasets
+st.write("Filtered Weekly Hours Data", hours_data)
+st.write("Filtered Hourly Earnings Data", earnings_data)
 
 # Merge the filtered datasets on the date
 merged_data = pd.merge(
@@ -172,6 +192,9 @@ merged_data = pd.merge(
     earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
     on='date'
 )
+
+# Debugging: Display merged data
+st.write("Merged Data", merged_data)
 
 # Interactive Plotly figure with filtered data
 fig = go.Figure()
@@ -212,7 +235,6 @@ fig.update_layout(
 
 # Display the interactive Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
-
 
 
 
