@@ -6,7 +6,8 @@ import plotly.graph_objects as go
 st.set_page_config(
     page_title="US Labor Market Dashboard",
     page_icon="📊",
-    layout="centered"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # Mapping of series IDs to human-readable names
@@ -212,10 +213,12 @@ fig.update_layout(
 st.plotly_chart(fig, use_container_width=True)
 
 # Summary Statistics
-# Set page title
-st.set_page_config(page_title="Summary Statistics", layout="centered")
+import streamlit as st
+import pandas as pd
 
-# Load data function
+# Set page title
+st.set_page_config(page_title="Summary Statistics", page_icon="📊", layout="centered")
+
 @st.cache_data
 def load_data():
     return pd.read_csv('BLS_data.csv', parse_dates=['date'])
