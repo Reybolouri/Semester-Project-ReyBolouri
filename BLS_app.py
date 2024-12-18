@@ -204,6 +204,8 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 
+import plotly.graph_objects as go
+
 # Interactive Funnel Chart: Weekly Hours and Hourly Earnings
 st.subheader("Funnel Chart: Trends in Weekly Hours and Hourly Earnings")
 
@@ -240,7 +242,7 @@ fig.add_trace(
         y=funnel_df["Metric"],
         x=funnel_df["End Value"] - funnel_df["Start Value"],
         textinfo="value+percent initial",
-        marker=dict(colors=["blue", "orange"])
+        marker=dict(color=["blue", "orange"])  # Corrected marker configuration
     )
 )
 
@@ -254,7 +256,6 @@ fig.update_layout(
 
 # Display the funnel chart
 st.plotly_chart(fig, use_container_width=True)
-
 
 
 
