@@ -226,7 +226,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 #  Civilian Employment and Unemployment
 st.subheader("Civilian Employment vs Civilian Unemployment")
-selected_year = st.sidebar.slider(
+selected_year = st.sidebar.selectbox(
     "Select Year for Pie Chart:",
     options=sorted(data['date'].dt.year.unique())
 )
@@ -257,16 +257,6 @@ fig_pie = px.pie(
 
 # Display the pie chart in Streamlit
 st.plotly_chart(fig_pie, use_container_width=True)
-
-
-
-
-
-
-
-
-
-
 
 
 
