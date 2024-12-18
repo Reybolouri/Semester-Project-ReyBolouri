@@ -72,7 +72,6 @@ Select the data series and time range below to explore trends and summaries.
 
 # Interactive Line Chart Visualization with Plotly
 st.subheader("Interactive Time Series Trends")
-
 # Create an empty figure
 fig = go.Figure()
 
