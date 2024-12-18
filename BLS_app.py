@@ -104,7 +104,7 @@ fig_unemployment.add_trace(
 )
 
 fig_unemployment.update_layout(
-    title="",
+    title="Unemployment Rate Over Time",
     xaxis_title="Date",
     yaxis_title="Unemployment Rate (%)",
     template="plotly_white",
