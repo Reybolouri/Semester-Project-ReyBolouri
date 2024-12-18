@@ -33,7 +33,7 @@ data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
 # Sidebar Enhancements
-st.sidebar.header("Filters")
+st.sidebar.header("Filters🔍")
 st.sidebar.write("Use the filters below to customize the dashboard.")
 
 # Dynamically assign defaults based on available options
@@ -92,7 +92,7 @@ st.markdown(
 )
 
 # Interactive Plot: Unemployment Rates
-st.subheader("Unemployment Rates")
+st.subheader("📈Unemployment Rates")
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
 fig_unemployment = go.Figure()
 
@@ -117,7 +117,7 @@ fig_unemployment.update_layout(
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
-st.subheader("Number of Nonfarm Employment")
+st.subheader("👷‍♂️Number of Nonfarm Employment")
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
@@ -143,7 +143,7 @@ st.plotly_chart(fig_nonfarm, use_container_width=True)
 
 # COVID-19's Impact
 st.markdown("""
-### COVID-19's Impact on the Labor Market
+### 🦠COVID-19's Impact on the Labor Market
 Wow! The impact of COVID-19 on the labor market is hard to miss. In 2020, unemployment rates skyrocketed, and thousands of jobs seemed to disappear suddenly.
 
 Quarantines, businesses shutting down, and widespread illness left workplaces empty and people struggling. It was one of the most sudden and dramatic economic shocks in history.
@@ -154,8 +154,9 @@ Quarantines, businesses shutting down, and widespread illness left workplaces em
 
 
 
+
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
-st.subheader("Trends: Weekly Hours vs Hourly Earnings Over Time")
+st.subheader("⏱️💰Trends: Weekly Hours vs Hourly Earnings Over Time")
 
 hours_data = data[data['series_id'] == 'CES0500000002']
 earnings_data = data[data['series_id'] == 'CES0500000003']
@@ -219,7 +220,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 # Interactive Pie Chart for Employment vs Unemployment with Year Filter
-st.subheader("Interactive Pie Chart: Employment vs Unemployment")
+st.subheader("📊 Civilian Employment vs Civilian Unemployment")
 
 # Filter data based on the selected year range
 filtered_employment = data[(data['series_id'] == 'LNS12000000') & (data['year'].between(selected_years[0], selected_years[1]))]
@@ -251,17 +252,17 @@ st.plotly_chart(fig_pie, use_container_width=True)
 
 
 # Summary Statistics
-st.subheader("Summary Statistics")
+st.subheader("📋Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
 st.dataframe(summary)
 
 # Data Table
-st.subheader("Filtered Data Table")
+st.subheader("📑Filtered Data Table")
 st.write(filtered_data)
 
 # Download button for filtered data
 st.download_button(
-    label="Download Filtered Data",
+    label="⬇️ Download Filtered Data",
     data=filtered_data.to_csv(index=False),
     file_name="filtered_bls_data.csv",
     mime="text/csv"
