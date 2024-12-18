@@ -29,16 +29,19 @@ st.sidebar.markdown(
     """
     <style>
     .sidebar .sidebar-content {
-        background-color: #f8f9fa; /* Light gray background */
-        border-radius: 10px;      /* Rounded corners */
-        padding: 15px;            /* Padding for spacing */
-        font-family: Arial, sans-serif; /* Better font */
+        background-color: #F5F5F5; /* Soft gray background */
+        padding: 20px;
+        border-radius: 10px;
+        font-family: 'Arial', sans-serif;
     }
-    .sidebar h3 {
-        color: #4CAF50;           /* Green accent for headers */
+    .sidebar .header {
+        color: #4CAF50; /* Green header color */
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 10px;
     }
-    .sidebar p {
-        color: #6c757d;           /* Subtle gray text */
+    .sidebar .text {
+        color: #6c757d;
         font-size: 14px;
     }
     </style>
@@ -46,10 +49,8 @@ st.sidebar.markdown(
     unsafe_allow_html=True
 )
 
-st.sidebar.header("Filters")
-st.sidebar.markdown(
-    "Use the filters below to customize the dashboard and explore trends:"
-)
+st.sidebar.markdown("<div class='header'>Filters</div>", unsafe_allow_html=True)
+st.sidebar.markdown("<div class='text'>Customize the dashboard using the filters below.</div>", unsafe_allow_html=True)
 
 # Debugging: Check unique values in series_name
 st.sidebar.write("Available Series Options:", data['series_name'].unique())
@@ -104,16 +105,18 @@ filtered_data = data[
 # Dashboard Title and Description
 st.markdown(
     """
-    <div style="background-color:#4CAF50; padding:10px; border-radius:10px; text-align:center;">
-        <h1 style="color:white; margin:0;">US Labor Market Dashboard</h1>
-    </div>
+    <h1 style="color:#4CAF50; text-align:center; margin-bottom:0;">
+        US Labor Market Dashboard
+    </h1>
+    <p style="text-align:center; font-size:16px; color:gray;">
+        Insights into labor statistics from the Bureau of Labor Statistics (BLS).
+    </p>
     """,
     unsafe_allow_html=True
 )
 
 st.write("""
-This dashboard provides insights into key labor statistics from the Bureau of Labor Statistics (BLS).
-Select the data series and time range below to explore trends and summaries.
+Explore trends by selecting data series and adjusting the time range.
 """)
 
 # Interactive Plot: Unemployment Rate
