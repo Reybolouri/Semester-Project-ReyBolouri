@@ -85,6 +85,31 @@ ax.grid(True)
 
 st.pyplot(fig)
 
+# Relationship between "Average Weekly Hours" and "Average Hourly Earnings"
+st.subheader("Relationship Between Weekly Hours and Hourly Earnings")
+
+# Filter data for the two relevant series
+hours_data = data[data['series_id'] == 'CES0500000002']
+earnings_data = data[data['series_id'] == 'CES0500000003']
+
+# Merge the two datasets on the date
+merged_data = pd.merge(
+    hours_data[['date', 'value']].rename(columns={'value': 'avg_weekly_hours'}),
+    earnings_data[['date', 'value']].rename(columns={'value': 'avg_hourly_earnings'}),
+    on='date'
+)
+
+# Create the scatter plot
+fig, ax = plt.subplots(figsize=(8, 6))
+ax.scatter(merged_data['avg_weekly_hours'], merged_data['avg_hourly_earnings'], alpha=0.7)
+ax.set_title("Average Weekly Hours vs. Average Hourly Earnings")
+ax.set_xlabel("Average Weekly Hours")
+ax.set_ylabel("Average Hourly Earnings")
+ax.grid(True)
+
+st.pyplot(fig)
+
+
 # Summary Statistics
 st.subheader("Summary Statistics")
 summary = filtered_data.groupby('series_name')['value'].describe()
