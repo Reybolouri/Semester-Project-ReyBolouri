@@ -27,9 +27,33 @@ data = load_data()
 data['series_name'] = data['series_id'].map(series_names)
 data['series_name'] = data['series_name'].fillna('Unknown Series')  # Handle unmapped series
 
-# Sidebar: Filters
+# Sidebar: Enhanced Design
+st.sidebar.markdown(
+    """
+    <style>
+    .sidebar .sidebar-content {
+        background-color: #f8f9fa; /* Light background */
+        padding: 10px;
+        border-radius: 8px;
+    }
+    .sidebar h3 {
+        color: #4CAF50; /* Green accent for headings */
+        margin-bottom: 5px;
+    }
+    .sidebar p {
+        color: #6c757d; /* Subtle gray text */
+        font-size: 14px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Sidebar Content
 st.sidebar.header("Filters")
-st.sidebar.write("Customize the data displayed in the dashboard.")
+st.sidebar.write("**Customize the data displayed below:**")
+
+# Multiselect for Data Series
 selected_series_names = st.sidebar.multiselect(
     "Select Data Series:",
     options=data['series_name'].unique(),
@@ -41,12 +65,27 @@ selected_series_names = st.sidebar.multiselect(
         "Average Hourly Earnings of All Employees"
     ]
 )
+
+# Year Range Selector
 selected_years = st.sidebar.slider(
     "Select Year Range:",
     min_value=int(data['year'].min()),
     max_value=int(data['year'].max()),
     value=(2019, int(data['year'].max()))
 )
+
+# Sidebar Footer with a Note
+st.sidebar.markdown(
+    """
+    ---
+    <p style="font-size: 12px; color: #6c757d;">
+    Use the filters above to explore trends in the US labor market. 
+    Data sourced from the Bureau of Labor Statistics.
+    </p>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Filter the data based on user input
 filtered_data = data[
