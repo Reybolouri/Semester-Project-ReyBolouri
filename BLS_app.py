@@ -89,7 +89,7 @@ st.markdown(
 
 
 # Interactive Plot: Unemployment Rates
-st.subheader("Unemployment Rate Over Time")
+st.subheader("Unemployment Rates Over Time")
 unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
 fig_unemployment = go.Figure()
 
@@ -104,7 +104,7 @@ fig_unemployment.add_trace(
 )
 
 fig_unemployment.update_layout(
-    title="Unemployment Rate Over Time",
+    title="",
     xaxis_title="Date",
     yaxis_title="Unemployment Rate (%)",
     template="plotly_white",
@@ -114,7 +114,7 @@ fig_unemployment.update_layout(
 st.plotly_chart(fig_unemployment, use_container_width=True)
 
 # Interactive Plot: Total Nonfarm Workers
-st.subheader("Total Nonfarm Workers Over Time")
+st.subheader("Number of Nonfarm Workers Over Time")
 nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
 fig_nonfarm = go.Figure()
 
@@ -129,7 +129,7 @@ fig_nonfarm.add_trace(
 )
 
 fig_nonfarm.update_layout(
-    title="Total Nonfarm Workers Over Time",
+    title="",
     xaxis_title="Date",
     yaxis_title="Workers (in thousands)",
     template="plotly_white",
