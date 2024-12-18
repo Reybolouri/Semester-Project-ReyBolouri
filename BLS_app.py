@@ -3,7 +3,11 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # Set page configuration for a wider layout
-st.set_page_config(page_title="US Labor Market Dashboard", layout="wide")
+st.set_page_config(
+    page_title="US Labor Market Dashboard",
+    page_icon="📊",
+    layout="wide"
+)
 
 # Mapping of series IDs to human-readable names
 series_names = {
@@ -79,14 +83,12 @@ filtered_data = data[
 st.markdown(
     """
     <div style="text-align: center; padding: 10px 0;">
-        <h1 style="color:#9C27B0;">US Labor Market</h1>
-        <p style="color:gray;">Unemployment and Labor trends over the years. Data sourced from the U.S. Bureau of Labor Statistics.</p>
+        <h1 style="color:#0D47A1;">US Labor Market Dashboard</h1>
+        <p style="color:gray;">Unemployment and labor trends over the years, sourced from the Bureau of Labor Statistics.</p>
     </div>
     """,
     unsafe_allow_html=True
 )
-
-
 
 # Interactive Plot: Unemployment Rates
 st.subheader("Unemployment Rates")
