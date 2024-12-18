@@ -30,7 +30,12 @@ st.sidebar.write("Available Series Options:", data['series_name'].unique())
 
 # Dynamically assign defaults based on available options
 available_options = data['series_name'].unique()
-default_options = ["Civilian Employment", "Total Nonfarm Employment", "Unemployment Rate"]
+default_options = ["Civilian Employment",
+                    "Civilian Unemployment", 
+                    "Unemployment Rate",
+                    "Total Nonfarm Employment",
+                    "Average Weekly Hours of All Employees",
+                    "Average Weekly Hours of All Employees"]
 
 # Ensure default values exist in available options
 default_options = [opt for opt in default_options if opt in available_options]
