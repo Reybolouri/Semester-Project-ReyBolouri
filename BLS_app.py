@@ -71,38 +71,74 @@ This dashboard provides insights into key labor statistics from the Bureau of La
 Select the data series and time range below to explore trends and summaries.
 """)
 
-# Interactive Line Chart Visualization with Plotly
-st.subheader("Interactive Time Series Trends")
-# Create an empty figure
-fig = go.Figure()
 
-# Add traces for each selected series
-for series_id in selected_series_ids:
-    subset = filtered_data[filtered_data['series_id'] == series_id]
-    series_label = series_names.get(series_id, series_id)  # Get human-readable label
-    
-    # Add a line trace for the series
-    fig.add_trace(
-        go.Scatter(
-            x=subset['date'],
-            y=subset['value'],
-            mode='lines',
-            name=series_label
-        )
+
+# Interactive Plot: Unemployment Rate
+st.subheader("Unemployment Rate Over Time")
+
+# Filter data for the Unemployment Rate series
+unemployment_data = filtered_data[filtered_data['series_id'] == 'LNS14000000']
+
+# Create an interactive plot
+fig_unemployment = go.Figure()
+
+fig_unemployment.add_trace(
+    go.Scatter(
+        x=unemployment_data['date'],
+        y=unemployment_data['value'],
+        mode='lines+markers',
+        name="Unemployment Rate",
+        line=dict(color='blue'),
     )
-
-# Update layout for better aesthetics
-fig.update_layout(
-    title="Time Series Trends",
-    xaxis_title="Date",
-    yaxis_title="Value",
-    legend_title="Series",
-    hovermode="x unified",
-    template="plotly_white"
 )
 
-# Display the Plotly figure in Streamlit
-st.plotly_chart(fig, use_container_width=True)
+# Update layout for better appearance
+fig_unemployment.update_layout(
+    title="Unemployment Rate Over Time",
+    xaxis_title="Date",
+    yaxis_title="Unemployment Rate (%)",
+    template="plotly_white",
+    hovermode="x unified"
+)
+
+# Display the plot in Streamlit
+st.plotly_chart(fig_unemployment, use_container_width=True)
+
+
+# Interactive Plot: Total Nonfarm Workers
+st.subheader("Total Nonfarm Workers Over Time")
+
+# Filter data for the Total Nonfarm Workers series
+nonfarm_data = filtered_data[filtered_data['series_id'] == 'CES0000000001']
+
+# Create an interactive plot
+fig_nonfarm = go.Figure()
+
+fig_nonfarm.add_trace(
+    go.Scatter(
+        x=nonfarm_data['date'],
+        y=nonfarm_data['value'],
+        mode='lines+markers',
+        name="Total Nonfarm Workers",
+        line=dict(color='green'),
+    )
+)
+
+# Update layout for better appearance
+fig_nonfarm.update_layout(
+    title="Total Nonfarm Workers Over Time",
+    xaxis_title="Date",
+    yaxis_title="Workers (in thousands)",
+    template="plotly_white",
+    hovermode="x unified"
+)
+
+# Display the plot in Streamlit
+st.plotly_chart(fig_nonfarm, use_container_width=True)
+
+
+
+
 
 
 # Relationship between "Average Weekly Hours" and "Average Hourly Earnings" over time
@@ -141,6 +177,8 @@ fig.suptitle("Average Weekly Hours vs Average Hourly Earnings Over Time")
 ax1.grid(True)
 
 st.pyplot(fig)
+
+
 
 
 
