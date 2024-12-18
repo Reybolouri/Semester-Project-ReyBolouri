@@ -79,7 +79,7 @@ filtered_data = data[
 st.markdown(
     """
     <div style="text-align: center; padding: 10px 0;">
-        <h1 style="color:#FFAB91;">US Labor Market</h1>
+        <h1 style="color:#FFCC80;">US Labor Market</h1>
         <p style="color:gray;">Unemployment and Labor trends over the years. Data sourced from the Bureau of Labor Statistics (BLS).</p>
     </div>
     """,
