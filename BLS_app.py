@@ -86,6 +86,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
+
 st.write("Use the sidebar to filter data by series and year range. Visualizations and summaries will update dynamically.")
 
 # Interactive Plot: Unemployment Rate
