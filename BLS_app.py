@@ -225,7 +225,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 # Interactive Pie Chart: Civilian Employment and Unemployment
-st.subheader("Interactive Pie Chart: Employment vs Unemployment")
+st.subheader("Civilian Employment vs Civilian Unemployment")
 
 # Allow user to select a specific year for the pie chart
 selected_year = st.sidebar.selectbox(
